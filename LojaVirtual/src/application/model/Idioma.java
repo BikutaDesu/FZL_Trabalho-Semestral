@@ -1,4 +1,4 @@
-package application.domain;
+package application.model;
 
 public class Idioma {
 

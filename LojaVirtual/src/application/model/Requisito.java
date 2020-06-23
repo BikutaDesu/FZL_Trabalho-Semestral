@@ -1,4 +1,4 @@
-package application.domain;
+package application.model;
 
 public class Requisito {
 
@@ -9,6 +9,10 @@ public class Requisito {
 	private String memoria;
 	private String placaVideo;
 	private String directX;
+
+	public Requisito() {
+		super();
+	}
 
 	public Requisito(Integer ID, String SO, String armazenamento, String processador, String memoria, String placaVideo,
 			String directX) {
@@ -77,5 +81,13 @@ public class Requisito {
 	public void setSO(String SO) {
 		this.SO = SO;
 	}
+
+	@Override
+	public String toString() {
+		return "[ID=" + ID + ", SO=" + SO + ", armazenamento=" + armazenamento + ", processador="
+				+ processador + ", memoria=" + memoria + ", placaVideo=" + placaVideo + ", directX=" + directX + "]";
+	}
+	
+	
 
 }

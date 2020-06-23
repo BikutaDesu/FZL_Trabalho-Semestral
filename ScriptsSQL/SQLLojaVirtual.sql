@@ -2,122 +2,123 @@ CREATE DATABASE lojaVirtual
 GO
 USE lojaVirtual
 
-CREATE TABLE Requisitos (
-IDRequisitos INTEGER not null,
-SO VARCHAR(100) not null,
-Armazenamento VARCHAR(10) not null,
-Processador VARCHAR(100) not null,
-Memoria VARCHAR(10) not null,
-PlacaVideo VARCHAR(100),
-DirectX VARCHAR(5) not null
-PRIMARY KEY (IDRequisitos)
+CREATE TABLE requisitos (
+codigo INTEGER not null,
+so VARCHAR(100) not null,
+armazenamento VARCHAR(10) not null,
+processador VARCHAR(100) not null,
+memoria VARCHAR(10) not null,
+placaVideo VARCHAR(100),
+directX VARCHAR(5) not null
+PRIMARY KEY (codigo)
 )
 GO
-CREATE TABLE Idioma (
-IDIdioma INTEGER not null,
-NomeIdioma VARCHAR(25) not null,
-PRIMARY KEY (IDIdioma)
+CREATE TABLE idiomas (
+codigo INTEGER not null,
+nomeIdioma VARCHAR(25) not null,
+PRIMARY KEY (codigo)
 )
 GO
-CREATE TABLE TipoUsuario (
-IDTipo INTEGER not null,
-Nome VARCHAR(30) not null,
-PRIMARY KEY (IDTipo)
+CREATE TABLE tipoUsuarios (
+codigo INTEGER not null,
+nome VARCHAR(30) not null,
+PRIMARY KEY (codigo)
 )
 GO
-CREATE TABLE Categoria (
-IDCategoria INTEGER not null,
-Nome VARCHAR(25) not null
-PRIMARY KEY (IdCategoria)
+CREATE TABLE categorias (
+codigo INTEGER not null,
+nome VARCHAR(25) not null
+PRIMARY KEY (codigo)
 )
 GO 
-CREATE TABLE Plataforma (
-IDPlataforma INTEGER not null,
-Nome VARCHAR(25) not null,
-PRIMARY KEY (IDPlataforma)
+CREATE TABLE plataformas (
+codigo INTEGER not null,
+nome VARCHAR(25) not null,
+PRIMARY KEY (codigo)
 )
 GO
-CREATE TABLE Usuario (
+CREATE TABLE usuarios (
 CPF INTEGER not null,
-Nome VARCHAR(100) not null, 
-Email VARCHAR(50) not null,
-Senha VARCHAR(30) not null,
-NomeUsuario VARCHAR(20) not null,
-TipoUsuarioIDTipo INTEGER not null
-FOREIGN KEY (TipoUsuarioIDTipo) REFERENCES TipoUsuario (IDTipo),
+nome VARCHAR(100) not null, 
+email VARCHAR(50) not null,
+senha VARCHAR(30) not null,
+nomeUsuario VARCHAR(20) not null,
+tipoUsuarioCodigo INTEGER not null
+FOREIGN KEY (tipoUsuarioCodigo) REFERENCES tipoUsuario (codigo),
 PRIMARY KEY (CPF)
 )
 GO
-CREATE TABLE Funcionarios (
-UsuarioCPF INTEGER not null,
-Logradouro VARCHAR(100) not null,
+CREATE TABLE funcionarios (
+usuarioCPF INTEGER not null,
+logradouro VARCHAR(100) not null,
 CEP CHAR(8) not null,
-NumPorta CHAR(5) not null,
-Salario DECIMAL(7,2)
-PRIMARY KEY (UsuarioCPF),
-FOREIGN KEY (UsuarioCPf) REFERENCES Usuario (CPF)
+numPorta CHAR(5) not null,
+salario DECIMAL(7,2)
+PRIMARY KEY (usuarioCPF),
+FOREIGN KEY (usuarioCPF) REFERENCES usuarios (CPF)
 )
 GO
-CREATE TABLE Pedido (
-IDPedido INTEGER not null,
-DtPedido DATE not null,
-ClienteCPF INTEGER not null
-PRIMARY KEY (IDPedido)
+CREATE TABLE pedidos (
+codigo INTEGER not null,
+dataPedido DATE not null,
+usuarioCPF INTEGER not null
+PRIMARY KEY (codigo),
+FOREIGN KEY (usuarioCPF) REFERENCES usuarios (CPF)
 )
 GO
-CREATE TABLE Telefone (
-Telefone INTEGER not null,
-ClienteCPF INTEGER not null
-FOREIGN KEY (ClienteCPF) REFERENCES Usuario (CPF),
-PRIMARY KEY (Telefone)
+CREATE TABLE telefones (
+telefone INTEGER not null,
+usuarioCPF INTEGER not null
+FOREIGN KEY (usuarioCPF) REFERENCES usuarios (CPF),
+PRIMARY KEY (telefone)
 )
 GO
-CREATE TABLE Jogo (
-IDJogo INTEGER not null,
-Nome VARCHAR(100) not null,
-Preco DECIMAL(7,2) not null,
-QtdJogo INTEGER not null,
-DtLancamento DATE not null,
-Desenvolvedora VARCHAR(100) not null,
-Distribuidora VARCHAR(100) not null,
-Imagem VARCHAR(100) not null,
-Descricao VARCHAR(MAX) not null,
-RequisitosIDRequisitos INTEGER not null,
-FuncionarioUsuarioCPF INTEGER not null
-FOREIGN KEY (RequisitosIDRequisitos) REFERENCES Requisitos (IDRequisitos),
-FOREIGN KEY (FuncionarioUsuarioCPF) REFERENCES Usuario (CPF),
-PRIMARY KEY (IDJogo)
+CREATE TABLE jogos (
+codigo INTEGER not null,
+nome VARCHAR(100) not null,
+preco DECIMAL(7,2) not null,
+qtdJogo INTEGER not null,
+dataLancamento DATE not null,
+desenvolvedora VARCHAR(100) not null,
+distribuidora VARCHAR(100) not null,
+imagem VARCHAR(100) not null,
+descricao VARCHAR(MAX) not null,
+requisitoCodigo INTEGER not null,
+funcionarioCPF INTEGER not null
+FOREIGN KEY (requisitoCodigo) REFERENCES requisitos (codigo),
+FOREIGN KEY (funcionarioCPF) REFERENCES usuarios (CPF),
+PRIMARY KEY (codigo)
 )
 GO
-CREATE TABLE Jogo_Idioma (
-JogoIDJogo INTEGER not null,
-IdiomaIDIdioma INTEGER not null
-PRIMARY KEY (JogoIDJogo, IdiomaIDIdioma),
-FOREIGN KEY (JogoIDJogo) REFERENCES Jogo (IDJogo),
-FOREIGN KEY (IdiomaIDIdioma) REFERENCES Idioma (IDIdioma)
+CREATE TABLE jogoIdioma (
+jogoCodigo INTEGER not null,
+idiomaCodigo INTEGER not null
+PRIMARY KEY (jogoCodigo, idiomaCodigo),
+FOREIGN KEY (jogoCodigo) REFERENCES jogos (codigo),
+FOREIGN KEY (idiomaCodigo) REFERENCES idiomas (codigo)
 )
 GO
-CREATE TABLE Jogo_Plataforma (
-JogoIDJogo INTEGER not null,
-PlataformaIDPlataforma INTEGER not null
-PRIMARY KEY (JogoIDJogo, PlataformaIDPlataforma)
-FOREIGN KEY (JogoIDJogo) REFERENCES Jogo (IDJogo),
-FOREIGN KEY (PlataformaIDPlataforma) REFERENCES Plataforma (IDPlataforma)
+CREATE TABLE jogoPlataforma (
+jogoCodigo INTEGER not null,
+plataformaCodigo INTEGER not null
+PRIMARY KEY (jogoCodigo, plataformaCodigo)
+FOREIGN KEY (jogoCodigo) REFERENCES jogos (codigo),
+FOREIGN KEY (plataformaCodigo) REFERENCES plataformas (codigo)
 )
 GO
-CREATE TABLE Jogo_Categoria (
-JogoIDJogo INTEGER not null,
-CategoriaIDCategoria INTEGER not null
-PRIMARY KEY (JogoIDJogo, CategoriaIDCategoria),
-FOREIGN KEY (JogoIDJogo) REFERENCES Jogo (IDJogo),
-FOREIGN KEY (CategoriaIDCategoria) REFERENCES Categoria (IDCategoria)
+CREATE TABLE jogoCategoria (
+jogoCodigo INTEGER not null,
+categoriaCodigo INTEGER not null
+PRIMARY KEY (jogoCodigo, categoriaCodigo),
+FOREIGN KEY (jogoCodigo) REFERENCES jogos (codigo),
+FOREIGN KEY (categoriaCodigo) REFERENCES categorias (codigo)
 )
 GO
-CREATE TABLE Jogo_Pedido (
-PedidoIDPedido INTEGER not null,
-JogoIDJogo INTEGER not null
-PRIMARY KEY (PedidoIDPedido, JogoIdJogo),
-FOREIGN KEY (PedidoIDPedido) REFERENCES Pedido (IDPedido),
-FOREIGN KEY (JogoIdJogo) REFERENCES Jogo (IDJogo)
+CREATE TABLE jogoPedido (
+pedidoCodigo INTEGER not null,
+jogoCodigo INTEGER not null
+PRIMARY KEY (pedidoCodigo, jogoCodigo),
+FOREIGN KEY (pedidoCodigo) REFERENCES pedidos (codigo),
+FOREIGN KEY (jogoCodigo) REFERENCES jogos (codigo)
 )
 

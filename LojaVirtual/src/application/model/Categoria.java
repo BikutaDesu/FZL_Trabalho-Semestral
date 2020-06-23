@@ -1,10 +1,14 @@
-package application.domain;
+package application.model;
 
 public class Categoria {
 
 	private Integer ID;
 	private String nome;
 
+	public Categoria() {
+		
+	}
+	
 	public Categoria(Integer ID, String nome) {
 		super();
 		this.ID = ID;

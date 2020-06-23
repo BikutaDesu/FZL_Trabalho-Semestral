@@ -1,4 +1,4 @@
-package application.domain;
+package application.model;
 
 import java.util.ArrayList;
 import java.util.Date;
