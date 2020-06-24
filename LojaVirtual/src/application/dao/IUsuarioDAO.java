@@ -11,6 +11,7 @@ public interface IUsuarioDAO {
 	public void update(Usuario usuario) throws SQLException;
 	public void delete(Usuario usuario) throws SQLException;
 	public Usuario select(Usuario usuario) throws SQLException;
+	public Usuario login(Usuario usuario) throws SQLException;
 	public List<Usuario> selectAll() throws SQLException;
 	
 }
