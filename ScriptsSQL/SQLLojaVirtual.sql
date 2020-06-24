@@ -19,12 +19,6 @@ nomeIdioma VARCHAR(25) not null,
 PRIMARY KEY (codigo)
 )
 GO
-CREATE TABLE tipoUsuarios (
-codigo INTEGER not null,
-nome VARCHAR(30) not null,
-PRIMARY KEY (codigo)
-)
-GO
 CREATE TABLE categorias (
 codigo INTEGER not null,
 nome VARCHAR(25) not null
@@ -43,8 +37,7 @@ nome VARCHAR(100) not null,
 email VARCHAR(50) not null,
 senha VARCHAR(30) not null,
 nomeUsuario VARCHAR(20) not null,
-tipoUsuarioCodigo INTEGER not null
-FOREIGN KEY (tipoUsuarioCodigo) REFERENCES tipoUsuario (codigo),
+tipoUsuario INTEGER not null
 PRIMARY KEY (CPF)
 )
 GO
