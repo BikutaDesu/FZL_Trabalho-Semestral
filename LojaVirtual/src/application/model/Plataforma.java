@@ -5,6 +5,9 @@ public class Plataforma {
 	private Integer ID;
 	private String nome;
 
+	public Plataforma() {
+	}
+	
 	public Plataforma(Integer ID, String nome) {
 		super();
 		this.ID = ID;

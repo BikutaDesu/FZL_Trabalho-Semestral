@@ -5,18 +5,21 @@ import java.util.List;
 
 public class Usuario {
 
-	private Integer ID;
+	private Integer CPF;
 	private String nome;
 	private String email;
 	private String senha;
 	private String nomeUsuario;
-	private TipoUsuario tipoUsuario;
+	private Integer tipoUsuario;
 	private List<Telefone> telefones = new ArrayList<Telefone>();
 
-	public Usuario(Integer ID, String nome, String email, String senha, String nomeUsuario, TipoUsuario tipoUsuario,
+	public Usuario() {
+	}
+	
+	public Usuario(Integer CPF, String nome, String email, String senha, String nomeUsuario, Integer tipoUsuario,
 			List<Telefone> telefones) {
 		super();
-		this.ID = ID;
+		this.CPF = CPF;
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
@@ -25,12 +28,12 @@ public class Usuario {
 		this.telefones = telefones;
 	}
 
-	public Integer getID() {
-		return ID;
+	public Integer getCPF() {
+		return CPF;
 	}
 
-	public void setID(Integer ID) {
-		this.ID = ID;
+	public void setCPF(Integer CPF) {
+		this.CPF = CPF;
 	}
 
 	public String getNome() {
@@ -65,11 +68,11 @@ public class Usuario {
 		this.nomeUsuario = nomeUsuario;
 	}
 
-	public TipoUsuario getTipoUsuario() {
+	public Integer getTipoUsuario() {
 		return tipoUsuario;
 	}
 
-	public void setTipoUsuario(TipoUsuario tipoUsuario) {
+	public void setTipoUsuario(Integer tipoUsuario) {
 		this.tipoUsuario = tipoUsuario;
 	}
 

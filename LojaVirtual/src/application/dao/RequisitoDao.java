@@ -25,7 +25,7 @@ public class RequisitoDao implements IRequisitoDAO {
 
 	@Override
 	public void insert(Requisito requisito) throws SQLException {
-		String sql = "INSERT INTO Requisitos VALUES (?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO requisitos VALUES (?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, requisito.getSO());
 		ps.setString(2, requisito.getArmazenamento());
@@ -103,7 +103,7 @@ public class RequisitoDao implements IRequisitoDAO {
 
 		ResultSet rs = ps.executeQuery();
 		
-		List<Requisito> listaProfessores = new ArrayList<Requisito>();
+		List<Requisito> listaRequisitos = new ArrayList<Requisito>();
 		
 		while (rs.next()) {
 			Requisito requisito = new Requisito();
@@ -115,12 +115,12 @@ public class RequisitoDao implements IRequisitoDAO {
 			requisito.setPlacaVideo(rs.getString("placaVideo"));
 			requisito.setDirectX(rs.getString("directX"));
 			
-			listaProfessores.add(requisito);
+			listaRequisitos.add(requisito);
 		}
 		rs.close();
 		ps.close();
 		
-		return listaProfessores;
+		return listaRequisitos;
 	}
 
 }

@@ -5,6 +5,9 @@ public class Idioma {
 	private Integer ID;
 	private String nome;
 
+	public Idioma() {
+	}
+	
 	public Idioma(Integer ID, String nome) {
 		super();
 		this.ID = ID;
