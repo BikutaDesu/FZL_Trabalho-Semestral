@@ -3,7 +3,7 @@ GO
 USE lojaVirtual
 
 CREATE TABLE requisitos (
-codigo INTEGER not null,
+codigo INTEGER not null IDENTITY(1,1),
 so VARCHAR(100) not null,
 armazenamento VARCHAR(10) not null,
 processador VARCHAR(100) not null,
@@ -14,19 +14,19 @@ PRIMARY KEY (codigo)
 )
 GO
 CREATE TABLE idiomas (
-codigo INTEGER not null,
+codigo INTEGER not null IDENTITY(1,1),
 nomeIdioma VARCHAR(25) not null,
 PRIMARY KEY (codigo)
 )
 GO
 CREATE TABLE categorias (
-codigo INTEGER not null,
+codigo INTEGER not null IDENTITY(1,1),
 nome VARCHAR(25) not null
 PRIMARY KEY (codigo)
 )
 GO 
 CREATE TABLE plataformas (
-codigo INTEGER not null,
+codigo INTEGER not null IDENTITY(1,1),
 nome VARCHAR(25) not null,
 PRIMARY KEY (codigo)
 )
@@ -52,7 +52,7 @@ FOREIGN KEY (usuarioCPF) REFERENCES usuarios (CPF)
 )
 GO
 CREATE TABLE pedidos (
-codigo INTEGER not null,
+codigo INTEGER not null IDENTITY(1,1),
 dataPedido DATE not null,
 usuarioCPF INTEGER not null
 PRIMARY KEY (codigo),
@@ -67,7 +67,7 @@ PRIMARY KEY (telefone)
 )
 GO
 CREATE TABLE jogos (
-codigo INTEGER not null,
+codigo INTEGER not null IDENTITY(1,1),
 nome VARCHAR(100) not null,
 preco DECIMAL(7,2) not null,
 qtdJogo INTEGER not null,
@@ -84,7 +84,7 @@ PRIMARY KEY (codigo)
 )
 GO
 CREATE TABLE jogoIdioma (
-jogoCodigo INTEGER not null,
+jogoCodigo INTEGER not null IDENTITY(1,1),
 idiomaCodigo INTEGER not null
 PRIMARY KEY (jogoCodigo, idiomaCodigo),
 FOREIGN KEY (jogoCodigo) REFERENCES jogos (codigo),
