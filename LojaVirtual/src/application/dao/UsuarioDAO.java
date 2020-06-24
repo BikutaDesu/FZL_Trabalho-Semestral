@@ -11,7 +11,6 @@ import java.util.List;
 import org.json.simple.parser.ParseException;
 
 import application.db.connection.factory.SQLServerConnectionFactory;
-import application.model.Requisito;
 import application.model.Usuario;
 
 public class UsuarioDAO implements IUsuarioDAO {
@@ -113,6 +112,35 @@ public class UsuarioDAO implements IUsuarioDAO {
 		}
 		
 		return listaUsuarios;
+	}
+
+	@Override
+	public Usuario login(Usuario usuario) throws SQLException {
+		String sql = "SELECT * FROM usuarios WHERE email=? AND senha=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, usuario.getEmail());
+		ps.setString(2, usuario.getSenha());
+
+		int i = 0;
+		ResultSet rs = ps.executeQuery();
+		
+		if (rs.next()) {
+			usuario.setCPF(rs.getInt("codigo"));
+			usuario.setNome(rs.getString("nome"));
+			usuario.setEmail(rs.getString("email"));
+			usuario.setSenha(rs.getString("senha"));
+			usuario.setNomeUsuario(rs.getString("nomeUsuario"));
+			usuario.setTipoUsuario(rs.getInt("tipoUsuario"));
+			i++;
+		}
+		
+		if (i == 0) {
+			usuario = new Usuario();
+		}
+		
+		rs.close();
+		ps.close();
+		return usuario;
 	}
 
 }
