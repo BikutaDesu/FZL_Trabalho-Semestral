@@ -121,26 +121,77 @@ public class UsuarioDAO implements IUsuarioDAO {
 		ps.setString(1, usuario.getEmail());
 		ps.setString(2, usuario.getSenha());
 
-		int i = 0;
 		ResultSet rs = ps.executeQuery();
 		
 		if (rs.next()) {
-			usuario.setCPF(rs.getInt("codigo"));
+			usuario.setCPF(rs.getInt("CPF"));
 			usuario.setNome(rs.getString("nome"));
 			usuario.setEmail(rs.getString("email"));
 			usuario.setSenha(rs.getString("senha"));
 			usuario.setNomeUsuario(rs.getString("nomeUsuario"));
 			usuario.setTipoUsuario(rs.getInt("tipoUsuario"));
-			i++;
-		}
-		
-		if (i == 0) {
-			usuario = new Usuario();
+			rs.close();
+			ps.close();
+			return usuario;
 		}
 		
 		rs.close();
 		ps.close();
-		return usuario;
+		return new Usuario();
+	}
+	
+	public boolean validaEmail(String email) throws SQLException {
+		String sql = "SELECT CPF FROM usuarios WHERE email=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, email);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		if(rs.next()) {
+			rs.close();
+			ps.close();
+			return false;
+		}else{
+			rs.close();
+			ps.close();
+			return true;
+		}
+	}
+	
+	public boolean validaNomeUsuario(String NomeUsuario) throws SQLException {
+		String sql = "SELECT CPF FROM usuarios WHERE nomeUsuario=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, NomeUsuario);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		if(rs.next()) {
+			rs.close();
+			ps.close();
+			return false;
+		}else{
+			rs.close();
+			ps.close();
+			return true;
+		}
+	}
+	
+	public boolean validaCpf(String cpf) throws SQLException {
+		String sql = "SELECT CPF FROM usuarios WHERE CPF=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, cpf);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		if(rs.next()) {
+			rs.close();
+			ps.close();
+			return false;
+		}else{
+			rs.close();
+			ps.close();
+			return true;
+		}
 	}
 
 }

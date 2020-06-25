@@ -34,9 +34,9 @@ GO
 CREATE TABLE usuarios (
 CPF INTEGER not null,
 nome VARCHAR(100) not null, 
-email VARCHAR(50) not null,
+email VARCHAR(50) UNIQUE not null,
 senha VARCHAR(30) not null,
-nomeUsuario VARCHAR(20) not null,
+nomeUsuario VARCHAR(20) UNIQUE not null,
 tipoUsuario INTEGER not null
 PRIMARY KEY (CPF)
 )

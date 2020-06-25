@@ -83,5 +83,9 @@ public class Usuario {
 	public void setTelefones(List<Telefone> telefones) {
 		this.telefones = telefones;
 	}
+	
+	public void addTelefone(Telefone telefone) {
+		this.telefones.add(telefone);
+	}
 
 }
