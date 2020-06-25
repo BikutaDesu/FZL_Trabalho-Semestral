@@ -22,3 +22,5 @@
 hs_err_pidi*
 
 database-properties.json
+
+.classpath
