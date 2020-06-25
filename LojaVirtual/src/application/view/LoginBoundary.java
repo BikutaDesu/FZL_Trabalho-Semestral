@@ -74,12 +74,14 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 			}
 			
 			if(erro.getText().isEmpty()) {
-				LoginControl usuario = new LoginControl();
+				LoginControl loginControl = new LoginControl();
 				try {
-					u = usuario.login(u);
+					u = loginControl.login(u);
 					if(u.getTipoUsuario()!=null) {
 						if(u.getTipoUsuario()==0) {
-							//vai pra tela adm
+							AdmBoundary adm = new AdmBoundary(u);
+							tela.getChildren().clear();
+							tela.getChildren().add(adm.generateForm());
 						}
 						if(u.getTipoUsuario()==1) {
 							//vai pra tela venda

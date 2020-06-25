@@ -68,7 +68,6 @@ public class UsuarioDAO implements IUsuarioDAO {
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, usuario.getCPF());
 
-		int i = 0;
 		ResultSet rs = ps.executeQuery();
 		
 		if (rs.next()) {
@@ -78,16 +77,14 @@ public class UsuarioDAO implements IUsuarioDAO {
 			usuario.setSenha(rs.getString("senha"));
 			usuario.setNomeUsuario(rs.getString("nomeUsuario"));
 			usuario.setTipoUsuario(rs.getInt("tipoUsuario"));
-			i++;
+			rs.close();
+			ps.close();
+			return usuario;
+		}else {
+			rs.close();
+			ps.close();
+			return new Usuario();
 		}
-		
-		if (i == 0) {
-			usuario = new Usuario();
-		}
-		
-		rs.close();
-		ps.close();
-		return usuario;
 	}
 
 	@Override
