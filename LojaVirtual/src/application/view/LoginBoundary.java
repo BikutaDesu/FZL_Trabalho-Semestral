@@ -9,10 +9,13 @@ import application.control.LoginControl;
 import application.model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
@@ -23,41 +26,43 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 	private Button btnCad = new Button("Cadastro");
 	private Button btnLogin = new Button("Login");
 	private Label erro = new Label();
-	private Pane tela = new Pane();
+	private BorderPane tela = new BorderPane();
 	
-	public LoginBoundary() {		
+	public LoginBoundary() {	
+		GridPane panCampos = new GridPane();
+		
+		panCampos.setPadding(new Insets(20, 20, 10, 10));
+		panCampos.setHgap(10);
+		panCampos.setVgap(10);
+		
 		Label lblCabecalho = new Label("Raizer Games");
 		lblCabecalho.setFont(new Font(30));
-		lblCabecalho.relocate(250, 20);
+		panCampos.add(lblCabecalho, 0, 0, 2, 1);
 		
-		Label lblEmail = new Label("Email:");
-		lblEmail.setFont(new Font(20));
-		lblEmail.relocate(250, 100);
-		txtEmail.relocate(350, 100);
+		panCampos.add(new Label("Email: "), 0, 1);
+		panCampos.add(txtEmail, 1, 1);
 		
-		Label lblSenha = new Label("Senha:");
-		lblSenha.setFont(new Font(20));
-		lblSenha.relocate(250, 150);
-		txtSenha.relocate(350, 150);
+		panCampos.add(new Label("Senha: "), 0, 2);
+		panCampos.add(txtSenha, 1, 2);
 		
+		GridPane panbtn = new GridPane();
 		btnCad.setOnAction(this);
-		btnCad.relocate(250, 200);
-		
-		btnLogin.relocate(350, 200);		
+		panbtn.add(btnCad, 0, 0);
 		btnLogin.setOnAction(this);
+		panbtn.add(btnLogin, 1, 0);
 		
-		erro.setFont(new Font(15));
-		erro.relocate(250, 250);
+		panCampos.add(panbtn, 1, 3);
 		
-		tela.getChildren().addAll(lblCabecalho ,lblEmail, lblSenha, txtEmail, txtSenha, btnCad, btnLogin, erro);
+		panCampos.add(erro, 3, 0);
+		
+		tela.setCenter(panCampos);
 	}
 
 	public void handle(ActionEvent event){
 		erro.setText("");
 		if (event.getTarget() == btnCad) { 
 			ClientesBoundary cliente = new ClientesBoundary();
-			tela.getChildren().clear();
-			tela.getChildren().add(cliente.generateForm());
+			tela.setCenter(cliente.generateForm());
 		} else if (event.getTarget() == btnLogin) { 
 			Usuario u = new Usuario();
 			
@@ -79,9 +84,8 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 					u = loginControl.login(u);
 					if(u.getTipoUsuario()!=null) {
 						if(u.getTipoUsuario()==0) {
-							AdmBoundary adm = new AdmBoundary(u);
-							tela.getChildren().clear();
-							tela.getChildren().add(adm.generateForm());
+							AdmBoundary admBoundary = new AdmBoundary(u);
+							tela.setCenter(admBoundary.generateForm());
 						}
 						if(u.getTipoUsuario()==1) {
 							//vai pra tela venda

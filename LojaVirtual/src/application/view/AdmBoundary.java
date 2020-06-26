@@ -9,8 +9,10 @@ import application.model.Funcionario;
 import application.model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
@@ -18,11 +20,9 @@ import javafx.scene.text.Font;
 public class AdmBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 	private Funcionario funcionario = new Funcionario();
 	private Button btnSair = new Button("Sair");
-	private Button btnCadJogos = new Button("Cadastrar Jogos");
-	private Button btnListJogos = new Button("Listar Jogos");
-	private Button btnCadFunc = new Button("Cadastrar Funcionário");
-	private Button btnListFunc = new Button("Listar Funcionário");
-	private Pane tela = new Pane();
+	private Button btnCadJogos = new Button("Manutanção de Jogos");
+	private Button btnCadFunc = new Button("Manutanção Funcionário");
+	private BorderPane tela = new BorderPane();
 	
 	public AdmBoundary(Usuario u) {
 		
@@ -31,26 +31,29 @@ public class AdmBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		
 		GridPane panCampos = new GridPane();
 		
+		panCampos.setPadding(new Insets(20, 20, 10, 10));
+		panCampos.setHgap(10);
+		panCampos.setVgap(10);
+		
 		Label lblNome = new Label("Usuário: "+funcionario.getUsuario().getNome());
 		//MUDAR QUANDO TIVER O DAO DO FUNCIONARIO
 		
 		lblNome.setFont(new Font(15));
-		panCampos.add(lblNome, 250, 1);
+		panCampos.add(lblNome, 0, 0);
 		
 		btnSair.setOnAction(this);
-		panCampos.add(btnSair, 500, 1);
+		panCampos.add(btnSair, 1, 0);
 				
 		Label lblTitulo = new Label("Painel de Adiministração da Loja");
 		lblTitulo.setFont(new Font(30));
-		panCampos.add(lblTitulo, 250, 30);
+		panCampos.add(lblTitulo, 0, 1);
 				
-		panCampos.add(btnCadJogos,250,50);
 		btnCadJogos.setOnAction(this);
-		panCampos.add(btnListJogos,250,55);
-		panCampos.add(btnCadFunc,250,60);
-		panCampos.add(btnListFunc,250,65);
+		panCampos.add(btnCadJogos,0,2);
+		btnCadFunc.setOnAction(this);
+		panCampos.add(btnCadFunc,0,3);
 		
-		tela.getChildren().add(panCampos);
+		tela.setCenter(panCampos);
 	}
 
 	@Override
@@ -68,6 +71,11 @@ public class AdmBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 			} catch (SQLException | IOException | ParseException e) {
 				e.printStackTrace();
 			}
+		}
+		if (event.getTarget() == btnCadFunc) {
+			FuncionarioBoundary funcionarioBoundary = new FuncionarioBoundary(funcionario);
+			tela.getChildren().clear();
+			tela.getChildren().add(funcionarioBoundary.generateForm());
 		}
 		
 	}

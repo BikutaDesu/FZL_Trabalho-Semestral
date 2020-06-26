@@ -279,7 +279,7 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 	private Jogo boundaryToEntity() {
 		Jogo jogo = new Jogo();
 		Requisito requisito = new Requisito();
-				
+		
 		try {
 			jogo.setNome(txtNome.getText());
 			jogo.setPreco(Float.parseFloat(txtPreco.getText()));

@@ -41,6 +41,10 @@ public class ClientesBoundary implements BoundaryContent, EventHandler<ActionEve
 	public ClientesBoundary() {		
 		GridPane panCampos = new GridPane();
 		
+		panCampos.setPadding(new Insets(20, 20, 10, 10));
+		panCampos.setHgap(10);
+		panCampos.setVgap(10);
+		
 		Label lblCabecalho = new Label("Cadastro de Clientes ");
 		lblCabecalho.setFont(new Font(30));
 		panCampos.add(lblCabecalho, 0, 0, 2, 2);
@@ -72,13 +76,13 @@ public class ClientesBoundary implements BoundaryContent, EventHandler<ActionEve
 		
 		panCampos.add(lblErro, 0, 10);
 		
-		panCampos.setPadding(new Insets(20, 20, 10, 10));
-		
 		btnSalvar.setOnAction(this);
 		btnVoltar.setOnAction(this);
 		
 		tela.setCenter(panCampos);	
 	}
+	
+	
 	
 	@Override
 	public void handle(ActionEvent event) {
@@ -155,8 +159,7 @@ public class ClientesBoundary implements BoundaryContent, EventHandler<ActionEve
 		}
 		if (event.getTarget() == btnVoltar) {
 			LoginBoundary login = new LoginBoundary();
-			tela.getChildren().clear();
-			tela.getChildren().add(login.generateForm());
+			tela.setCenter(login.generateForm());
 		}
 	}
 
