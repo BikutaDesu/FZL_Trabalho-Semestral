@@ -8,13 +8,7 @@ public class Funcionario {
 	private String numPorta;
 	private Float salario;
 	
-	public Funcionario(Usuario usuario, String logradouro, String CEP, String numPorta, Float salario) {
-		super();
-		this.usuario = usuario;
-		this.logradouro = logradouro;
-		this.CEP = CEP;
-		this.numPorta = numPorta;
-		this.salario = salario;
+	public Funcionario() {
 	}
 
 	public Usuario getUsuario() {

@@ -30,5 +30,10 @@ public class Categoria {
 	public void setID(Integer ID) {
 		this.ID = ID;
 	}
+	
+	@Override
+	public String toString() {
+		return this.nome;
+	}
 
 }

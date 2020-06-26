@@ -1,19 +1,22 @@
 package application.view;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
+import org.json.simple.parser.ParseException;
+
+import application.model.Funcionario;
 import application.model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
-import javafx.geometry.Pos;
 
 public class AdmBoundary implements BoundaryContent, EventHandler<ActionEvent>{
-	Usuario usuario = new Usuario();
+	private Funcionario funcionario = new Funcionario();
 	private Button btnSair = new Button("Sair");
 	private Button btnCadJogos = new Button("Cadastrar Jogos");
 	private Button btnListJogos = new Button("Listar Jogos");
@@ -22,11 +25,15 @@ public class AdmBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 	private Pane tela = new Pane();
 	
 	public AdmBoundary(Usuario u) {
-		this.usuario = u;
+		
+		//MUDAR QUANDO TIVER O DAO DO FUNCIONARIO
+		this.funcionario.setUsuario(u);
 		
 		GridPane panCampos = new GridPane();
 		
-		Label lblNome = new Label("Usuário: "+usuario.getNome());
+		Label lblNome = new Label("Usuário: "+funcionario.getUsuario().getNome());
+		//MUDAR QUANDO TIVER O DAO DO FUNCIONARIO
+		
 		lblNome.setFont(new Font(15));
 		panCampos.add(lblNome, 250, 1);
 		
@@ -38,11 +45,10 @@ public class AdmBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		panCampos.add(lblTitulo, 250, 30);
 				
 		panCampos.add(btnCadJogos,250,50);
+		btnCadJogos.setOnAction(this);
 		panCampos.add(btnListJogos,250,55);
 		panCampos.add(btnCadFunc,250,60);
 		panCampos.add(btnListFunc,250,65);
-		
-		panCampos.setAlignment(Pos.TOP_CENTER);
 		
 		tela.getChildren().add(panCampos);
 	}
@@ -50,9 +56,18 @@ public class AdmBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 	@Override
 	public void handle(ActionEvent event) {
 		if (event.getTarget() == btnSair) {
-			LoginBoundary login = new LoginBoundary();
+			LoginBoundary loginBoundary = new LoginBoundary();
 			tela.getChildren().clear();
-			tela.getChildren().add(login.generateForm());
+			tela.getChildren().add(loginBoundary.generateForm());
+		}
+		if (event.getTarget() == btnCadJogos) {
+			try {
+				JogoBoundary jogoBoundary = new JogoBoundary(funcionario);
+				tela.getChildren().clear();
+				tela.getChildren().add(jogoBoundary.generateForm());
+			} catch (SQLException | IOException | ParseException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
