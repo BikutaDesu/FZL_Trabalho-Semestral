@@ -89,7 +89,7 @@ public class IdiomaDAO implements IIdiomaDAO {
 		while (rs.next()) {
 			Idioma idioma = new Idioma();
 			idioma.setID(rs.getInt("codigo"));
-			idioma.setNome(rs.getString("nome"));
+			idioma.setNome(rs.getString("nomeIdioma"));
 			
 			listaIdiomas.add(idioma);
 		}

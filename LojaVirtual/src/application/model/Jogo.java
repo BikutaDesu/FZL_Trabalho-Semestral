@@ -1,6 +1,8 @@
 package application.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Jogo {
 
@@ -14,10 +16,17 @@ public class Jogo {
 	private String nomeImg;
 	private String descricao;
 	private Requisito requisito;
+<<<<<<< HEAD
 	
 	public Jogo() {
 		
 	}
+=======
+	private Funcionario funcionario;
+	private List<Idioma> idiomas = new ArrayList<Idioma>();
+	private List<Plataforma> plataforma = new ArrayList<Plataforma>();
+	private List<Categoria> categoria = new ArrayList<Categoria>();
+>>>>>>> 95819a4709b3fa9bda4aac007a6f42df3824c728
 	
 	public Jogo(Integer ID, String nome, Float preco, Integer qtdJogo, Date dataLancamento, String desenvolvedora,
 			String distribuidora, String nomeImg, String descricao, Requisito requisito) {
@@ -32,6 +41,9 @@ public class Jogo {
 		this.nomeImg = nomeImg;
 		this.descricao = descricao;
 		this.requisito = requisito;
+	}
+	
+	public Jogo() {
 	}
 
 	public Integer getID() {
@@ -114,4 +126,38 @@ public class Jogo {
 		this.requisito = requisito;
 	}
 
+<<<<<<< HEAD
+=======
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
+	public List<Idioma> getIdiomas() {
+		return idiomas;
+	}
+
+	public void setIdiomas(List<Idioma> idiomas) {
+		this.idiomas = idiomas;
+	}
+
+	public List<Plataforma> getPlataforma() {
+		return plataforma;
+	}
+
+	public void setPlataforma(List<Plataforma> plataforma) {
+		this.plataforma = plataforma;
+	}
+
+	public List<Categoria> getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(List<Categoria> categoria) {
+		this.categoria = categoria;
+	}	
+>>>>>>> 95819a4709b3fa9bda4aac007a6f42df3824c728
 }

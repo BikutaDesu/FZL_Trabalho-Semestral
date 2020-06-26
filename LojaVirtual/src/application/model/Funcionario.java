@@ -9,6 +9,7 @@ public class Funcionario {
 	private Float salario;
 	
 	public Funcionario() {
+<<<<<<< HEAD
 		
 	}
  	
@@ -19,6 +20,8 @@ public class Funcionario {
 		this.CEP = CEP;
 		this.numPorta = numPorta;
 		this.salario = salario;
+=======
+>>>>>>> 95819a4709b3fa9bda4aac007a6f42df3824c728
 	}
 
 	public Usuario getUsuario() {
