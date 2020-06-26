@@ -2,20 +2,24 @@ package application.model;
 
 public class Telefone {
 
-	private Integer numero;
+	private String numero;
 	private Usuario usuario;
 
-	public Telefone(Integer numero, Usuario usuario) {
+	public Telefone() {
+		
+	}
+	
+	public Telefone(String numero, Usuario usuario) {
 		super();
 		this.numero = numero;
 		this.usuario = usuario;
 	}
 
-	public Integer getNumero() {
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(Integer numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 

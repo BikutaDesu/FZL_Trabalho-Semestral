@@ -36,7 +36,6 @@ public class RequisitoDao implements IRequisitoDAO {
 
 		ps.execute();
 		ps.close();
-
 	}
 
 	@Override

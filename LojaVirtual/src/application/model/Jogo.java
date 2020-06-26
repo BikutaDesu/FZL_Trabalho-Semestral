@@ -14,10 +14,13 @@ public class Jogo {
 	private String nomeImg;
 	private String descricao;
 	private Requisito requisito;
-	private Funcionario funcionario;
+	
+	public Jogo() {
+		
+	}
 	
 	public Jogo(Integer ID, String nome, Float preco, Integer qtdJogo, Date dataLancamento, String desenvolvedora,
-			String distribuidora, String nomeImg, String descricao, Requisito requisito, Funcionario funcionario) {
+			String distribuidora, String nomeImg, String descricao, Requisito requisito) {
 		super();
 		this.ID = ID;
 		this.nome = nome;
@@ -29,7 +32,6 @@ public class Jogo {
 		this.nomeImg = nomeImg;
 		this.descricao = descricao;
 		this.requisito = requisito;
-		this.funcionario = funcionario;
 	}
 
 	public Integer getID() {
@@ -112,14 +114,4 @@ public class Jogo {
 		this.requisito = requisito;
 	}
 
-	public Funcionario getFuncionario() {
-		return funcionario;
-	}
-
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
-	}
-
-	
-	
 }

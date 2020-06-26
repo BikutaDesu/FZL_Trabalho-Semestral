@@ -11,6 +11,10 @@ public class Pedido {
 	private Usuario usuarioPedido;
 	private List<Jogo> jogos = new ArrayList<Jogo>();
 
+	public Pedido() {
+		
+	}
+	
 	public Pedido(Integer ID, Date dataPedido, Usuario usuarioPedido, List<Jogo> jogos) {
 		super();
 		this.ID = ID;

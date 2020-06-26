@@ -27,7 +27,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 	public void insert(Usuario usuario) throws SQLException {
 		String sql = "INSERT INTO usuarios VALUES (?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setInt(1, usuario.getCPF());
+		ps.setString(1, usuario.getCPF());
 		ps.setString(2, usuario.getNome());
 		ps.setString(3, usuario.getEmail());
 		ps.setString(4, usuario.getSenha());
@@ -56,7 +56,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 	public void delete(Usuario usuario) throws SQLException {
 		String sql = "DELETE usuarios WHERE CPF = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setInt(1, usuario.getCPF());
+		ps.setString(1, usuario.getCPF());
 		
 		ps.execute();
 		ps.close();
@@ -66,12 +66,12 @@ public class UsuarioDAO implements IUsuarioDAO {
 	public Usuario select(Usuario usuario) throws SQLException {
 		String sql = "SELECT * FROM usuarios WHERE CPF=?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setInt(1, usuario.getCPF());
+		ps.setString(1, usuario.getCPF());
 
 		ResultSet rs = ps.executeQuery();
 		
 		if (rs.next()) {
-			usuario.setCPF(rs.getInt("codigo"));
+			usuario.setCPF(rs.getString("CPF"));
 			usuario.setNome(rs.getString("nome"));
 			usuario.setEmail(rs.getString("email"));
 			usuario.setSenha(rs.getString("senha"));
@@ -98,7 +98,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 		
 		while (rs.next()) {
 			Usuario usuario = new Usuario();
-			usuario.setCPF(rs.getInt("codigo"));
+			usuario.setCPF(rs.getString("CPF"));
 			usuario.setNome(rs.getString("nome"));
 			usuario.setEmail(rs.getString("email"));
 			usuario.setSenha(rs.getString("senha"));
@@ -121,7 +121,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 		ResultSet rs = ps.executeQuery();
 		
 		if (rs.next()) {
-			usuario.setCPF(rs.getInt("CPF"));
+			usuario.setCPF(rs.getString("CPF"));
 			usuario.setNome(rs.getString("nome"));
 			usuario.setEmail(rs.getString("email"));
 			usuario.setSenha(rs.getString("senha"));
@@ -155,10 +155,10 @@ public class UsuarioDAO implements IUsuarioDAO {
 		}
 	}
 	
-	public boolean validaNomeUsuario(String NomeUsuario) throws SQLException {
+	public boolean validaNomeUsuario(String nomeUsuario) throws SQLException {
 		String sql = "SELECT CPF FROM usuarios WHERE nomeUsuario=?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, NomeUsuario);
+		ps.setString(1, nomeUsuario);
 		
 		ResultSet rs = ps.executeQuery();
 		

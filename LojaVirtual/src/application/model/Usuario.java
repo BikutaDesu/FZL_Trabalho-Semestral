@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Usuario {
 
-	private Integer CPF;
+	private String CPF;
 	private String nome;
 	private String email;
 	private String senha;
@@ -16,7 +16,7 @@ public class Usuario {
 	public Usuario() {
 	}
 	
-	public Usuario(Integer CPF, String nome, String email, String senha, String nomeUsuario, Integer tipoUsuario,
+	public Usuario(String CPF, String nome, String email, String senha, String nomeUsuario, Integer tipoUsuario,
 			List<Telefone> telefones) {
 		super();
 		this.CPF = CPF;
@@ -28,11 +28,11 @@ public class Usuario {
 		this.telefones = telefones;
 	}
 
-	public Integer getCPF() {
+	public String getCPF() {
 		return CPF;
 	}
 
-	public void setCPF(Integer CPF) {
+	public void setCPF(String CPF) {
 		this.CPF = CPF;
 	}
 
