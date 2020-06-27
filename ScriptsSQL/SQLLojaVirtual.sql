@@ -86,7 +86,7 @@ PRIMARY KEY (codigo)
 )
 GO
 CREATE TABLE jogoIdioma (
-jogoCodigo INTEGER NOT NULL IDENTITY(1,1),
+jogoCodigo INTEGER NOT NULL,
 idiomaCodigo INTEGER NOT NULL
 PRIMARY KEY (jogoCodigo, idiomaCodigo),
 FOREIGN KEY (jogoCodigo) REFERENCES jogos (codigo),
@@ -192,6 +192,92 @@ INSERT INTO telefones (telefone, usuarioCPF)VALUES
 ('985230232', '74393472537'),
 ('985547221', '74238647373')
 
+INSERT INTO jogos (nome, preco, qtdJogo, dataLancamento, desenvolvedora, distribuidora, imagem, descricao, requisitoCodigo) VALUES
+('Missile Command', 5.99, 25, '24-06-2020', 'Nickervision Studios' , 'Distribuidora X', 'missile.png', 'Missile Command: Recharged é uma nova versão do amado e agitado clássico de fliperama'
+	, 1),
+('Monster Hunter World', 99.99, 30, '11-03-2019', 'CAPCOM', 'CAPCOM', 'monsterHunter.png', 'Conheça o Novo Mundo! Em Monster Hunter: World, o jogo mais recente da série.'
+	, 2),
+('Stardew Valley', 14.99, 50, '26-02-2016', 'ConcernedApe', 'ConcernedApe', 'stardew.png', 'Você herdou a antiga fazenda do seu avô, em Stardew Valley.'
+	, 3),
+('Saint Row The Third Remastered', 4.99, 75, '24-02-2016','Volition', 'Deep Silver', 'saintRow.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'
+	, 4),
+('Tomb Raider Definitive Edition', 58.99, 47, '24-02-2017', 'Eidos-Montréal', 'Square Enix', 'tombRaider.png', 'Em Shadow of the Tomb Raider Definitive Edition, acompanhe o capítulo final da origem de Lara e testemunhe'
+	, 5),
+('Assassins Creed Odysssey', 89.99, 51, '24-12-2019', 'Rafaela', 'Distribuidora  Y', 'assassins.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'
+	, 6),
+('Sekiro Shadows Die Twice', 47.99, 64, '24-02-2020','Rachel', 'Distribuidora Z', 'sekiro.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'
+	, 7),
+('Dark Souls III', 42.99, 93, '12-05-2016', 'Mario', 'Distribuidora S', 'dark.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'
+	, 8),
+('Hollow Knight', 78.99, 37, '24-09-2019','Sofia', 'Distribuidora F', 'hollow.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'
+	, 9),
+('Star Wars Jedi Fallen Order', 65.99, 30, '24-02-2014','Noah', 'Distribuidora R', 'starWars.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'
+	, 10),
+('Batman Arkhan Asylum', 43.99, 32, '26-12-2016', 'Joaquim', 'Distribuidora J', 'batman.png','Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'
+	, 11),
+('Naruto Shippuden Ultimate Ninja Storm 4', 76.99, 64, '12-02-2019', 'Nathan', 'Distribuidora N', 'naruto.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'
+	, 12),
+('Dragon Ball FighterZ', 83.99, 89, '24-05-2020', 'Jorge', 'Distribuidora A', 'dragonBall.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'
+	, 13),
+('Mortal Kombat 11', 49.99, 28, '17-05-2018', 'Diana', 'Distribuidora G', 'mortalKombat.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'
+	, 14)
+
+INSERT INTO jogoIdioma (jogoCodigo, idiomaCodigo) VALUES
+(1, 5),
+(2, 2),
+(3, 5),
+(4, 1),
+(4, 2),
+(5, 3),
+(5, 2),
+(6, 4),
+(7, 1),
+(8, 2),
+(9, 4),
+(10, 4),
+(11, 1),
+(12, 2),
+(13, 3),
+(14, 5)
+
+INSERT INTO jogoPlataforma (jogoCodigo, plataformaCodigo) VALUES
+(1, 5),
+(2, 2),
+(3, 5),
+(4, 1),
+(5, 2),
+(6, 4),
+(7, 1),
+(8, 2),
+(9, 4),
+(10, 4),
+(11, 1),
+(12, 2),
+(13, 3),
+(14, 5)
+
+INSERT INTO jogoCategoria (jogoCodigo, categoriaCodigo) VALUES
+(1, 1),
+(2, 7),
+(3, 5),
+(4, 4),
+(5, 3),
+(6, 6),
+(7, 4),
+(8, 5),
+(9, 2),
+(10, 1),
+(11, 3),
+(12, 3),
+(13, 5),
+(14, 7)
+
+INSERT INTO jogoPedido (jogoCodigo, pedidoCodigo) VALUES
+(1, 1),
+(6, 2),
+(5, 4),
+(9, 2),
+(2, 3)
 
 -- Consulta de funcionários
 SELECT u.CPF, u.nome, u.email, u.senha, u.nomeUsuario, u.tipoUsuario, f.logradouro, f.numPorta, f.CEP, f.salario FROM funcionarios f
