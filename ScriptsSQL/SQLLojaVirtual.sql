@@ -291,14 +291,16 @@ select * from idiomas
 select * from jogoIdioma
 select * from jogos
 
+/*
 UPDATE jogos SET nome=?, preco=?, qtdJogo=?, dataLancamento=?, desenvolvedora=?, distribuidora=?, imagem=?, descricao=?
 WHERE jogos.codigo like ?
-
 
 SELECT	codigo, nome, preco, qtdJogo, CONVERT(varchar, dataLancamento ,103) AS dataLancamento, desenvolvedora, distribuidora,
 		imagem, descricao
 FROM jogos 
 WHERE nome like ?
+*/
+
 
 SELECT i.codigo, i.nomeIdioma 
 FROM idiomas i INNER JOIN jogoIdioma ij

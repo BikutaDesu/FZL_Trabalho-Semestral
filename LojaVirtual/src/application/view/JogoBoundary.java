@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-
 import org.json.simple.parser.ParseException;
 
 import application.control.CategoriaControl;
@@ -43,8 +42,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 
-
-public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
+public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent> {
 
 	private Button btnSalvar = new Button("Salvar");
 	private Button btnVoltar = new Button("Voltar");
@@ -100,37 +98,36 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 	private JogosControl control = new JogosControl();
 
 	@SuppressWarnings("unchecked")
-	public void generateTable() { 
-		TableColumn<Jogo, Integer> colId  = new TableColumn<>("ID");
+	public void generateTable() {
+		TableColumn<Jogo, Integer> colId = new TableColumn<>("ID");
 		colId.setCellValueFactory(new PropertyValueFactory<Jogo, Integer>("ID"));
-		
-		TableColumn<Jogo, String> colNome  = new TableColumn<>("Nome");
+
+		TableColumn<Jogo, String> colNome = new TableColumn<>("Nome");
 		colNome.setCellValueFactory(new PropertyValueFactory<Jogo, String>("nome"));
 
-		TableColumn<Jogo, Float> colPreco  = new TableColumn<>("Preço");
+		TableColumn<Jogo, Float> colPreco = new TableColumn<>("Preço");
 		colPreco.setCellValueFactory(new PropertyValueFactory<Jogo, Float>("preco"));
 
-		TableColumn<Jogo, Integer> colQtdJogo  = new TableColumn<>("Estoque");
+		TableColumn<Jogo, Integer> colQtdJogo = new TableColumn<>("Estoque");
 		colQtdJogo.setCellValueFactory(new PropertyValueFactory<Jogo, Integer>("qtdJogo"));
 
-		TableColumn<Jogo, String> colDataLancamento  = new TableColumn<>("Lançamento");
-		colDataLancamento.setCellValueFactory(itemData -> { 
-			return new ReadOnlyStringWrapper(
-					dtf.format(itemData.getValue().getDataLancamento()));
+		TableColumn<Jogo, String> colDataLancamento = new TableColumn<>("Lançamento");
+		colDataLancamento.setCellValueFactory(itemData -> {
+			return new ReadOnlyStringWrapper(dtf.format(itemData.getValue().getDataLancamento()));
 		});
-		
+
 		tableJogo.getColumns().addAll(colId, colNome, colPreco, colQtdJogo, colDataLancamento);
 		tableJogo.setItems(control.getList());
 
-		tableJogo.getSelectionModel().selectedItemProperty().addListener( new ChangeListener<Jogo>() {
+		tableJogo.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Jogo>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Jogo> observable, Jogo oldValue, Jogo newValue) {
 				entityToBoundary(newValue);
-				
+
 				btnAtualizar.setOnAction(e -> {
 					try {
-						control.atualizar(newValue.getID(),boundaryToEntity());
+						control.atualizar(newValue.getID(), boundaryToEntity());
 					} catch (SQLException | IOException | ParseException e1) {
 						e1.printStackTrace();
 					}
@@ -142,22 +139,22 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 						e1.printStackTrace();
 					}
 				});
-			}			
+			}
 		});
 
-		TableColumn<Idioma, String> colNomeIdioma  = new TableColumn<>("Idiomas");
+		TableColumn<Idioma, String> colNomeIdioma = new TableColumn<>("Idiomas");
 		colNomeIdioma.setCellValueFactory(new PropertyValueFactory<Idioma, String>("nome"));
 
 		tableIdiomas.getColumns().addAll(colNomeIdioma);
 		tableIdiomas.setItems(listIdioma);
 
-		TableColumn<Categoria, String> colNomeCategoria  = new TableColumn<>("Categorias");
+		TableColumn<Categoria, String> colNomeCategoria = new TableColumn<>("Categorias");
 		colNomeCategoria.setCellValueFactory(new PropertyValueFactory<Categoria, String>("nome"));
 
 		tableCategorias.getColumns().addAll(colNomeCategoria);
 		tableCategorias.setItems((ObservableList<Categoria>) listCategoria);
 
-		TableColumn<Plataforma, String> colNomePlataforma  = new TableColumn<>("Plataformas");
+		TableColumn<Plataforma, String> colNomePlataforma = new TableColumn<>("Plataformas");
 		colNomePlataforma.setCellValueFactory(new PropertyValueFactory<Plataforma, String>("nome"));
 
 		tablePlataformas.getColumns().addAll(colNomePlataforma);
@@ -166,7 +163,7 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 
 	public JogoBoundary(Funcionario funcionario) throws SQLException, IOException, ParseException {
 		this.funcionario = funcionario;
-		
+
 		generateTable();
 
 		GridPane panCampos = new GridPane();
@@ -177,7 +174,7 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		btnVoltar.setOnAction(this);
 		panCampos.add(btnVoltar, 0, 0);
 
-		Label lblNome = new Label("Usuário: "+funcionario.getUsuario().getNome());
+		Label lblNome = new Label("Usuário: " + funcionario.getUsuario().getNome());
 		lblNome.setFont(new Font(15));
 		panCampos.add(lblNome, 1, 0);
 
@@ -210,7 +207,7 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		panCampos.add(new Label("Distribuidora: "), 0, 7);
 		panCampos.add(txtDistribuidora, 1, 7);
 
-		imgViewJogo.setImage(new Image("/img/image.jpg",240,240, false, false));
+		imgViewJogo.setImage(new Image("/img/image.jpg", 240, 240, false, false));
 		panCampos.add(imgViewJogo, 5, 2, 3, 11);
 
 		panCampos.add(new Label("Imagem: "), 0, 8);
@@ -218,7 +215,7 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		btnBuscar.setOnAction(e -> {
 			url = fileChooser.showOpenDialog(null);
 			txtIimagem.setText(url.getPath());
-			Image imgJogo = new Image("file:///"+url, 240, 240, false, false);
+			Image imgJogo = new Image("file:///" + url, 240, 240, false, false);
 			imgViewJogo.setImage(imgJogo);
 		});
 		panCampos.add(btnBuscar, 2, 8);
@@ -251,7 +248,7 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		panCampos.add(new Label("Idioma: "), 0, 17);
 		panCampos.add(boxIdioma, 1, 17);
 		btnAddIdioma.setOnAction(e -> {
-			if(!listIdioma.contains(boxIdioma.getValue())&& boxIdioma.getValue()!=null) {
+			if (!listIdioma.contains(boxIdioma.getValue()) && boxIdioma.getValue() != null) {
 				listIdioma.add(boxIdioma.getValue());
 			}
 		});
@@ -260,7 +257,7 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		panCampos.add(new Label("Plataforma: "), 0, 18);
 		panCampos.add(boxPlataforma, 1, 18);
 		btnAddPlataforma.setOnAction(e -> {
-			if(!listPlataforma.contains(boxPlataforma.getValue()) && boxPlataforma.getValue()!=null ) {
+			if (!listPlataforma.contains(boxPlataforma.getValue()) && boxPlataforma.getValue() != null) {
 				listPlataforma.add(boxPlataforma.getValue());
 			}
 		});
@@ -270,7 +267,7 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		panCampos.add(boxCategoria, 1, 19);
 		btnAddCategoria.setOnAction(e -> {
 
-			if(!listCategoria.contains(boxCategoria.getValue()) && boxCategoria.getValue()!=null) {
+			if (!listCategoria.contains(boxCategoria.getValue()) && boxCategoria.getValue() != null) {
 				listCategoria.add(boxCategoria.getValue());
 			}
 		});
@@ -302,7 +299,6 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		tela.getChildren().addAll(panCampos);
 	}
 
-
 	@Override
 	public void handle(ActionEvent event) {
 		if (event.getTarget() == btnSair) {
@@ -333,32 +329,32 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		}
 	}
 
-	private Jogo boundaryToEntity() {	
+	private Jogo boundaryToEntity() {
 		Jogo jogo = new Jogo();
 		try {
 			jogo.setNome(txtNome.getText());
 			jogo.setPreco(Float.parseFloat(txtPreco.getText()));
 			jogo.setQtdJogo(Integer.parseInt(txtQtdJogo.getText()));
 			LocalDate dt = LocalDate.parse(txtDataLancamento.getText(), dtf);
-			jogo.setDataLancamento(dt);			
+			jogo.setDataLancamento(dt);
 			jogo.setDesenvolvedora(txtDesenvolvedora.getText());
 			jogo.setDistribuidora(txtDistribuidora.getText());
 			jogo.setDescricao(txtDescricao.getText());
 			jogo.setIdiomas(listIdioma);
 			jogo.setPlataforma(listPlataforma);
 			jogo.setCategoria(listCategoria);
-			
+
 			File currentDirFile = new File("");
 			File imgOri;
-			if(txtIimagem.getText().contains(jogo.getNome())) {
-				imgOri = new File(currentDirFile.getAbsolutePath()+"/src/img/"+jogo.getNome()+".jpg");
-			}else {
+			if (txtIimagem.getText().contains(jogo.getNome())) {
+				imgOri = new File(currentDirFile.getAbsolutePath() + "/src/img/" + jogo.getNome() + ".jpg");
+			} else {
 				imgOri = new File(txtIimagem.getText());
 			}
-			File copyImg = new File(currentDirFile.getAbsolutePath()+"/src/img/"+jogo.getNome()+".jpg");
+			File copyImg = new File(currentDirFile.getAbsolutePath() + "/src/img/" + jogo.getNome() + ".jpg");
 			Files.copy(imgOri.toPath(), copyImg.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			jogo.setNomeImg(copyImg.getName());
-				
+
 			Requisito requisito = new Requisito();
 			requisito.setID(idJogo);
 			requisito.setSO(txtSO.getText());
@@ -367,18 +363,18 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 			requisito.setMemoria(txtMemoria.getText());
 			requisito.setPlacaVideo(txtPlacaVideo.getText());
 			requisito.setDirectX(txtDirectX.getText());
-			
+
 			jogo.setRequisito(requisito);
 
-		}catch (Exception e){
+		} catch (Exception e) {
 			System.out.println(e);
 		}
-		
+
 		return jogo;
 	}
 
 	private void entityToBoundary(Jogo jogo) {
-		try{
+		try {
 			txtNome.setText(jogo.getNome());
 			txtPreco.setText(jogo.getPreco().toString());
 			txtQtdJogo.setText(jogo.getQtdJogo().toString());
@@ -386,7 +382,7 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 			txtDesenvolvedora.setText(jogo.getDesenvolvedora());
 			txtDistribuidora.setText(jogo.getDistribuidora());
 			txtDescricao.setText(jogo.getDescricao());
-			
+
 			Requisito requisito = new Requisito();
 			requisito = jogo.getRequisito();
 			txtSO.setText(requisito.getSO());
@@ -406,11 +402,12 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 			listCategoria.addAll(jogo.getCategoria());
 
 			File currentDirFile = new File("");
-			Image imgJogo = new Image("file:///"+currentDirFile.getAbsolutePath()+"/src/img/"+jogo.getNomeImg(), 240, 240, false, false);
+			Image imgJogo = new Image("file:///" + currentDirFile.getAbsolutePath() + "/src/img/" + jogo.getNomeImg(),
+					240, 240, false, false);
 			imgViewJogo.setImage(imgJogo);
 
 			txtIimagem.setText(jogo.getNomeImg());
-		}catch (Exception e) {
+		} catch (Exception e) {
 		}
 	}
 
@@ -429,7 +426,7 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		boxPlataforma.getItems().addAll(plataformaControl.getLista());
 	}
 
-	private void carregaCategoria() throws SQLException, IOException, ParseException{
+	private void carregaCategoria() throws SQLException, IOException, ParseException {
 		CategoriaControl categoriaControl = new CategoriaControl();
 		boxCategoria.getItems().addAll(categoriaControl.getLista());
 	}
