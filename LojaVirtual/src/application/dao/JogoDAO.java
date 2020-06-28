@@ -99,7 +99,8 @@ public class JogoDAO implements IJogoDAO {
 		ps.setString(8, jogo.getDescricao());
 		ps.setInt(9, jogo.getID());
 		jogoIdiomaDAO.update(jogo);
-		
+		jogoCategoriaDAO.update(jogo);
+		jogoPlataformaDAO.update(jogo);
 		requisitoDAO.update(jogo);
 		
 		ps.execute();
@@ -108,6 +109,11 @@ public class JogoDAO implements IJogoDAO {
 
 	@Override
 	public void delete(Jogo jogo) throws SQLException {
+		requisitoDAO.delete(jogo);
+		jogoIdiomaDAO.delete(jogo);
+		jogoCategoriaDAO.delete(jogo);
+		jogoPlataformaDAO.delete(jogo);
+		
 		String sql = "DELETE FROM jogos WHERE codigo = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, jogo.getID());
@@ -215,6 +221,8 @@ public class JogoDAO implements IJogoDAO {
 			jogo.setDescricao(rs.getString("descricao"));
 			
 			jogo.setIdiomas(jogoIdiomaDAO.selectAll(jogo));
+			jogo.setCategoria(jogoCategoriaDAO.selectAll(jogo));
+			jogo.setPlataforma(jogoPlataformaDAO.selectAll(jogo));
 			
 			RequisitoDAO requisitoDAO = new RequisitoDAO();
 			jogo.setRequisito(requisitoDAO.select(jogo));

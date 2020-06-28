@@ -26,7 +26,7 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 	private Button btnCad = new Button("Cadastro");
 	private Button btnLogin = new Button("Login");
 	private Label erro = new Label();
-	private BorderPane tela = new BorderPane();
+	private Pane tela = new Pane();
 	
 	public LoginBoundary() {	
 		GridPane panCampos = new GridPane();
@@ -55,14 +55,15 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 		
 		panCampos.add(erro, 3, 0);
 		
-		tela.setCenter(panCampos);
+		tela.getChildren().addAll(panCampos);
 	}
 
 	public void handle(ActionEvent event){
 		erro.setText("");
 		if (event.getTarget() == btnCad) { 
 			ClientesBoundary cliente = new ClientesBoundary();
-			tela.setCenter(cliente.generateForm());
+			tela.getChildren().clear();
+			tela.getChildren().addAll(cliente.generateForm());
 		} else if (event.getTarget() == btnLogin) { 
 			Usuario u = new Usuario();
 			
@@ -85,7 +86,8 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 					if(u.getTipoUsuario()!=null) {
 						if(u.getTipoUsuario()==1) {
 							AdmBoundary admBoundary = new AdmBoundary(u);
-							tela.setCenter(admBoundary.generateForm());
+							tela.getChildren().clear();
+							tela.getChildren().addAll(admBoundary.generateForm());
 						}
 						if(u.getTipoUsuario()==0) {
 							//vai pra tela venda

@@ -5,13 +5,13 @@ import java.util.List;
 
 public class Usuario {
 
-	private String CPF;
-	private String nome;
-	private String email;
-	private String senha;
-	private String nomeUsuario;
-	private Integer tipoUsuario;
-	private List<Telefone> telefones = new ArrayList<Telefone>();
+	protected String CPF;
+	protected String nome;
+	protected String email;
+	protected String senha;
+	protected String nomeUsuario;
+	protected Integer tipoUsuario;
+	protected List<Telefone> telefones = new ArrayList<Telefone>();
 
 	public Usuario() {
 	}

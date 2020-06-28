@@ -13,13 +13,13 @@ import javafx.collections.ObservableList;
 
 public class FuncionarioControl {
 	private ObservableList<Funcionario> funcionarios = FXCollections.observableArrayList();
+	private FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
 	
 	public ObservableList<Funcionario> getLista() {
 		return funcionarios;
 	}
 	
 	public void pesquisar(String nome) throws SQLException, IOException, ParseException {
-		FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
 		funcionarios.clear();
 		List<Funcionario> listaTemp = funcionarioDAO.pesquisarPorNome(nome);
 		funcionarios.addAll(listaTemp);

@@ -2,6 +2,8 @@ package application.view;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +28,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -124,6 +127,21 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 			@Override
 			public void changed(ObservableValue<? extends Jogo> observable, Jogo oldValue, Jogo newValue) {
 				entityToBoundary(newValue);
+				
+				btnAtualizar.setOnAction(e -> {
+					try {
+						control.atualizar(newValue.getID(),boundaryToEntity());
+					} catch (SQLException | IOException | ParseException e1) {
+						e1.printStackTrace();
+					}
+				});
+				btnExcluir.setOnAction(e -> {
+					try {
+						control.remover(newValue);
+					} catch (SQLException | IOException | ParseException e1) {
+						e1.printStackTrace();
+					}
+				});
 			}			
 		});
 
@@ -152,6 +170,9 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		generateTable();
 
 		GridPane panCampos = new GridPane();
+		panCampos.setPadding(new Insets(20, 20, 10, 10));
+		panCampos.setHgap(10);
+		panCampos.setVgap(10);
 
 		btnVoltar.setOnAction(this);
 		panCampos.add(btnVoltar, 0, 0);
@@ -257,15 +278,15 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 
 		tableIdiomas.setMaxWidth(80);
 		tableIdiomas.setMaxHeight(200);
-		panCampos.add(tableIdiomas, 5, 13, 1, 8);
+		panCampos.add(tableIdiomas, 5, 13, 1, 9);
 
 		tablePlataformas.setMaxWidth(80);
 		tablePlataformas.setMaxHeight(200);
-		panCampos.add(tablePlataformas, 6, 13, 1, 8);
+		panCampos.add(tablePlataformas, 6, 13, 1, 9);
 
 		tableCategorias.setMaxWidth(80);
 		tableCategorias.setMaxHeight(200);
-		panCampos.add(tableCategorias, 7, 13, 1, 8);
+		panCampos.add(tableCategorias, 7, 13, 1, 9);
 
 		btnExcluir.setOnAction(this);
 		panCampos.add(btnExcluir, 0, 20);
@@ -310,14 +331,6 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 				e.printStackTrace();
 			}
 		}
-		if (event.getTarget() == btnAtualizar) {
-			try {
-				Jogo j = boundaryToEntity();
-				control.atualizar(j);
-			} catch (SQLException | IOException | ParseException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	private Jogo boundaryToEntity() {	
@@ -335,16 +348,16 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 			jogo.setPlataforma(listPlataforma);
 			jogo.setCategoria(listCategoria);
 			
-//			File currentDirFile = new File("");
-//			File imgOri = new File(txtIimagem.getText());
-//			File copyImg = new File(currentDirFile.getAbsolutePath()+"/src/img/"+imgOri.getName());
-//			if(!copyImg.exists()) {
-//				Files.copy(imgOri.toPath(), copyImg.toPath(), StandardCopyOption.REPLACE_EXISTING);
-//				jogo.setNomeImg(copyImg.toPath().toString());
-//
-//			}else{
-				jogo.setNomeImg(txtIimagem.getText());
-//			}
+			File currentDirFile = new File("");
+			File imgOri;
+			if(txtIimagem.getText().contains(jogo.getNome())) {
+				imgOri = new File(currentDirFile.getAbsolutePath()+"/src/img/"+jogo.getNome()+".jpg");
+			}else {
+				imgOri = new File(txtIimagem.getText());
+			}
+			File copyImg = new File(currentDirFile.getAbsolutePath()+"/src/img/"+jogo.getNome()+".jpg");
+			Files.copy(imgOri.toPath(), copyImg.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			jogo.setNomeImg(copyImg.getName());
 				
 			Requisito requisito = new Requisito();
 			requisito.setID(idJogo);
@@ -365,37 +378,40 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 	}
 
 	private void entityToBoundary(Jogo jogo) {
-		txtNome.setText(jogo.getNome());
-		txtPreco.setText(jogo.getPreco().toString());
-		txtQtdJogo.setText(jogo.getQtdJogo().toString());
-		txtDataLancamento.setText(dtf.format(jogo.getDataLancamento()));
-		txtDesenvolvedora.setText(jogo.getDesenvolvedora());
-		txtDistribuidora.setText(jogo.getDistribuidora());
-		txtDescricao.setText(jogo.getDescricao());
-		
-		Requisito requisito = new Requisito();
-		requisito = jogo.getRequisito();
-		txtSO.setText(requisito.getSO());
-		txtArmazenamento.setText(requisito.getArmazenamento());
-		txtProcessador.setText(requisito.getProcessador());
-		txtMemoria.setText(requisito.getMemoria());
-		txtPlacaVideo.setText(requisito.getPlacaVideo());
-		txtDirectX.setText(requisito.getDirectX());
+		try{
+			txtNome.setText(jogo.getNome());
+			txtPreco.setText(jogo.getPreco().toString());
+			txtQtdJogo.setText(jogo.getQtdJogo().toString());
+			txtDataLancamento.setText(dtf.format(jogo.getDataLancamento()));
+			txtDesenvolvedora.setText(jogo.getDesenvolvedora());
+			txtDistribuidora.setText(jogo.getDistribuidora());
+			txtDescricao.setText(jogo.getDescricao());
+			
+			Requisito requisito = new Requisito();
+			requisito = jogo.getRequisito();
+			txtSO.setText(requisito.getSO());
+			txtArmazenamento.setText(requisito.getArmazenamento());
+			txtProcessador.setText(requisito.getProcessador());
+			txtMemoria.setText(requisito.getMemoria());
+			txtPlacaVideo.setText(requisito.getPlacaVideo());
+			txtDirectX.setText(requisito.getDirectX());
 
-		listIdioma.clear();
-		listIdioma.addAll(jogo.getIdiomas());
+			listIdioma.clear();
+			listIdioma.addAll(jogo.getIdiomas());
 
-		listPlataforma.clear();
-		listPlataforma.addAll(jogo.getPlataforma());
+			listPlataforma.clear();
+			listPlataforma.addAll(jogo.getPlataforma());
 
-		listCategoria.clear();
-		listCategoria.addAll(jogo.getCategoria());
+			listCategoria.clear();
+			listCategoria.addAll(jogo.getCategoria());
 
+			File currentDirFile = new File("");
+			Image imgJogo = new Image("file:///"+currentDirFile.getAbsolutePath()+"/src/img/"+jogo.getNomeImg(), 240, 240, false, false);
+			imgViewJogo.setImage(imgJogo);
 
-		Image imgJogo = new Image("file:///"+jogo.getNomeImg(), 240, 240, false, false);
-		imgViewJogo.setImage(imgJogo);
-
-		txtIimagem.setText(jogo.getNomeImg());
+			txtIimagem.setText(jogo.getNomeImg());
+		}catch (Exception e) {
+		}
 	}
 
 	@Override

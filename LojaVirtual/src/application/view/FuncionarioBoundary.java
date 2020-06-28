@@ -1,12 +1,18 @@
 package application.view;
 
+import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 
+import org.json.simple.parser.ParseException;
+
+import application.control.FuncionarioControl;
 import application.model.Categoria;
 import application.model.Funcionario;
 import application.model.Idioma;
 import application.model.Jogo;
 import application.model.Plataforma;
+import application.model.Usuario;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
@@ -46,42 +53,45 @@ public class FuncionarioBoundary implements BoundaryContent, EventHandler<Action
 	private TextField txtNumPorta = new TextField();
 	private TextField txtSalario = new TextField();
 	
-	private Label lblErro = new Label();
-	
+	private TableView<Funcionario> tableFuncionario = new TableView<>();
 	private Funcionario funcionario = new Funcionario();
+	private FuncionarioControl control = new FuncionarioControl();
 	
-	private BorderPane tela = new BorderPane();
+	private Pane tela = new Pane();
 	
+	@SuppressWarnings("unchecked")
 	public void generateTable() { 
-		TableColumn<Jogo, String> colNome  = new TableColumn<>("Nome");
-		colNome.setCellValueFactory(new PropertyValueFactory<Jogo, String>("nome"));
+		TableColumn<Funcionario, String> colCpf  = new TableColumn<>("CPF");
+		colCpf.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("usuario.CPF"));
 		
-		TableColumn<Jogo, Float> colPreco  = new TableColumn<>("Preço");
-		colPreco.setCellValueFactory(new PropertyValueFactory<Jogo, Float>("preco"));
+		TableColumn<Funcionario, String> colNome  = new TableColumn<>("Nome");
+		colNome.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("usuario.nome"));
 		
-		TableColumn<Jogo, Integer> colQtdJogo  = new TableColumn<>("Estoque");
-		colQtdJogo.setCellValueFactory(new PropertyValueFactory<Jogo, Integer>("qtdJogo"));
+		TableColumn<Funcionario, String> colEmail  = new TableColumn<>("E-Mail");
+		colEmail.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("usuario.email"));
 		
-		TableColumn<Jogo, Date> colDataLancamento  = new TableColumn<>("Lançamento");
-		colDataLancamento.setCellValueFactory(new PropertyValueFactory<Jogo, Date>("dataLancamento"));
+		TableColumn<Funcionario, Float> colSalario  = new TableColumn<>("Salario");
+		colSalario.setCellValueFactory(new PropertyValueFactory<Funcionario, Float>("salario"));
 		
-		tableJogo.getColumns().addAll(colNome, colPreco, colQtdJogo, colDataLancamento);
-		tableJogo.setItems(control.getLista());
+		tableFuncionario.getColumns().addAll(colCpf, colNome, colEmail, colSalario);
+		tableFuncionario.setItems(control.getLista());
 	}
 	
 	public FuncionarioBoundary(Funcionario funcionario) {
 		this.funcionario = funcionario;
-		GridPane panCampos = new GridPane();
+		generateTable();
 		
+		GridPane panCampos = new GridPane();
 		panCampos.setPadding(new Insets(20, 20, 10, 10));
 		panCampos.setHgap(10);
 		panCampos.setVgap(10);
+
+		Label lblNome = new Label("Usuário: "+funcionario.getUsuario().getNome());
+		lblNome.setFont(new Font(15));
+		panCampos.add(lblNome, 1, 0);
 		
 		btnVoltar.setOnAction(this);
 		panCampos.add(btnVoltar, 0, 0);
-		
-		Label lblNome = new Label("Usuário: "+funcionario.getUsuario().getNome());
-		panCampos.add(lblNome, 1, 0);
 		
 		btnSair.setOnAction(this);
 		panCampos.add(btnSair, 2, 0);
@@ -114,7 +124,7 @@ public class FuncionarioBoundary implements BoundaryContent, EventHandler<Action
 		panCampos.add(new Label("Logradouro: "), 0, 9);
 		panCampos.add(txtLogradouro, 1, 9);
 		
-		panCampos.add(new Label("CEP 2: "), 0, 10);
+		panCampos.add(new Label("CEP: "), 0, 10);
 		panCampos.add(txtCep, 1, 10);
 		
 		panCampos.add(new Label("Numero da Porta: "), 0, 11);
@@ -130,15 +140,31 @@ public class FuncionarioBoundary implements BoundaryContent, EventHandler<Action
 		btnAtualizar.setOnAction(this);
 		panCampos.add(btnAtualizar, 1, 13);
 		
-		panCampos.add(lblErro, 0, 14);
+		panCampos.add(btnPesq, 3, 2);
+		panCampos.add(tableFuncionario, 3, 3, 1, 13);
 		
-		tela.setCenter(panCampos);
+		tela.getChildren().addAll(panCampos);
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
-		// TODO Auto-generated method stub
-		
+		if (event.getTarget() == btnSair) {
+			LoginBoundary login = new LoginBoundary();
+			tela.getChildren().clear();
+			tela.getChildren().add(login.generateForm());
+		}
+		if (event.getTarget() == btnVoltar) {
+			AdmBoundary admBoundary = new AdmBoundary(funcionario.getUsuario());
+			tela.getChildren().clear();
+			tela.getChildren().add(admBoundary.generateForm());
+		}
+		if (event.getTarget() == btnPesq) {
+			try {
+				control.pesquisar(txtNome.getText());
+			} catch (SQLException | IOException | ParseException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override

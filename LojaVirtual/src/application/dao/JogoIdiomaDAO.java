@@ -27,6 +27,15 @@ public class JogoIdiomaDAO {
 		}
 	}
 	
+	public void delete(Jogo jogo) throws SQLException {
+		String sql = "DELETE jogoIdioma WHERE jogoCodigo = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, jogo.getID());
+
+		ps.execute();
+		ps.close();
+	}
+	
 	public void insert(Jogo jogo, Idioma idioma) throws SQLException {
 		String sql = "INSERT INTO jogoIdioma (jogoCodigo, idiomaCodigo) VALUES(?, ?)";
 		PreparedStatement ps = con.prepareStatement(sql);

@@ -27,18 +27,18 @@ public class JogosControl {
 	}
 	
 	public void adiconar(Jogo jogo) throws SQLException, IOException, ParseException {
-		if(jogos.contains(jogo)) atualizar(jogo);
-		else jogoDAO.insert(jogo);
+		jogoDAO.insert(jogo);
 		pesquisar("");
 	}
 	
-	public void atualizar(Jogo jogo) throws SQLException, IOException, ParseException {
-		for (Jogo i : jogos) {
-			if(i.equals(jogo)) {
-				jogoDAO.update(i);
-				break;
-			}
-		}
+	public void atualizar(int id, Jogo novo) throws SQLException, IOException, ParseException {
+		novo.setID(id);
+		jogoDAO.update(novo);
+		pesquisar("");
+	}
+	
+	public void remover(Jogo jogo) throws SQLException, IOException, ParseException {
+		jogoDAO.delete(jogo);
 		pesquisar("");
 	}
 }

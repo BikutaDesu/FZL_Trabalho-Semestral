@@ -26,6 +26,15 @@ public class JogoCategoriaDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public void delete(Jogo jogo) throws SQLException {
+		String sql = "DELETE jogoCategoria WHERE jogoCodigo = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, jogo.getID());
+
+		ps.execute();
+		ps.close();
+	}
 
 	public void insert(Jogo jogo, Categoria categoria) throws SQLException {
 		String sql = "INSERT INTO jogoCategoria (jogoCodigo, categoriaCodigo) VALUES(?, ?)";
@@ -82,8 +91,8 @@ public class JogoCategoriaDAO {
 
 		while (rs.next()) {
 			Categoria categoria = new Categoria();
-			categoria.setID(rs.getInt("jogoCodigo"));
-			categoria.setNome(rs.getString("categoriaCodigo"));
+			categoria.setID(rs.getInt("codigo"));
+			categoria.setNome(rs.getString("nome"));
 
 			listaCategoria.add(categoria);
 		}

@@ -19,9 +19,13 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 	private Connection con;
 	private SQLServerConnectionFactory factory;
 	
-	public FuncionarioDAO() throws SQLException, IOException, ParseException {
-		factory = new SQLServerConnectionFactory();
-		con = factory.getConnection();
+	public FuncionarioDAO(){
+		try {
+			factory = new SQLServerConnectionFactory();
+			con = factory.getConnection();
+		} catch (SQLException | IOException | ParseException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

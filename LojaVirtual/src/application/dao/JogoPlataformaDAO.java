@@ -27,6 +27,15 @@ public class JogoPlataformaDAO {
 		}
 	}
 	
+	public void delete(Jogo jogo) throws SQLException {
+		String sql = "DELETE jogoPlataforma WHERE jogoCodigo = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, jogo.getID());
+
+		ps.execute();
+		ps.close();
+	}
+	
 	public void insert(Jogo jogo, Plataforma plataforma) throws SQLException {
 		String sql = "INSERT INTO jogoPlataforma (jogoCodigo, plataformaCodigo) VALUES(?, ?)";
 		PreparedStatement ps = con.prepareStatement(sql);
@@ -83,7 +92,7 @@ public class JogoPlataformaDAO {
 		while (rs.next()) {
 			Plataforma plataforma = new Plataforma();
 			plataforma.setID(rs.getInt("codigo"));
-			plataforma.setNome(rs.getString("nomeIdioma"));
+			plataforma.setNome(rs.getString("nome"));
 			
 			listaPlataforma.add(plataforma);
 		}
