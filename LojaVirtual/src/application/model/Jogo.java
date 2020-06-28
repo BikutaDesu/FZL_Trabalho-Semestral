@@ -1,7 +1,7 @@
 package application.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Jogo {
@@ -10,25 +10,19 @@ public class Jogo {
 	private String nome;
 	private Float preco;
 	private Integer qtdJogo;
-	private Date dataLancamento;
+	private LocalDate dataLancamento = LocalDate.now();
 	private String desenvolvedora;
 	private String distribuidora;
 	private String nomeImg;
 	private String descricao;
 	private Requisito requisito;
-<<<<<<< HEAD
 	
-	public Jogo() {
-		
-	}
-=======
 	private Funcionario funcionario;
 	private List<Idioma> idiomas = new ArrayList<Idioma>();
 	private List<Plataforma> plataforma = new ArrayList<Plataforma>();
 	private List<Categoria> categoria = new ArrayList<Categoria>();
->>>>>>> 95819a4709b3fa9bda4aac007a6f42df3824c728
 	
-	public Jogo(Integer ID, String nome, Float preco, Integer qtdJogo, Date dataLancamento, String desenvolvedora,
+	public Jogo(Integer ID, String nome, Float preco, Integer qtdJogo, LocalDate dataLancamento, String desenvolvedora,
 			String distribuidora, String nomeImg, String descricao, Requisito requisito) {
 		super();
 		this.ID = ID;
@@ -78,11 +72,11 @@ public class Jogo {
 		this.qtdJogo = qtdJogo;
 	}
 
-	public Date getDataLancamento() {
+	public LocalDate getDataLancamento() {
 		return dataLancamento;
 	}
 
-	public void setDataLancamento(Date dataLancamento) {
+	public void setDataLancamento(LocalDate dataLancamento) {
 		this.dataLancamento = dataLancamento;
 	}
 
@@ -126,8 +120,6 @@ public class Jogo {
 		this.requisito = requisito;
 	}
 
-<<<<<<< HEAD
-=======
 	public Funcionario getFuncionario() {
 		return funcionario;
 	}
@@ -159,5 +151,4 @@ public class Jogo {
 	public void setCategoria(List<Categoria> categoria) {
 		this.categoria = categoria;
 	}	
->>>>>>> 95819a4709b3fa9bda4aac007a6f42df3824c728
 }

@@ -1,13 +1,22 @@
 package application.view;
 
+import java.sql.Date;
+
+import application.model.Categoria;
 import application.model.Funcionario;
+import application.model.Idioma;
+import application.model.Jogo;
+import application.model.Plataforma;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -22,6 +31,7 @@ public class FuncionarioBoundary implements BoundaryContent, EventHandler<Action
 	private Button btnAtualizar = new Button("Atualizar");
 	private Button btnExcluir = new Button("Excluir");
 	private Button btnSair = new Button("Sair");
+	private Button btnPesq = new Button("Pesquisar");
 	
 	private TextField txtCpf = new TextField();
 	private TextField txtNome = new TextField();
@@ -41,6 +51,23 @@ public class FuncionarioBoundary implements BoundaryContent, EventHandler<Action
 	private Funcionario funcionario = new Funcionario();
 	
 	private BorderPane tela = new BorderPane();
+	
+	public void generateTable() { 
+		TableColumn<Jogo, String> colNome  = new TableColumn<>("Nome");
+		colNome.setCellValueFactory(new PropertyValueFactory<Jogo, String>("nome"));
+		
+		TableColumn<Jogo, Float> colPreco  = new TableColumn<>("Preço");
+		colPreco.setCellValueFactory(new PropertyValueFactory<Jogo, Float>("preco"));
+		
+		TableColumn<Jogo, Integer> colQtdJogo  = new TableColumn<>("Estoque");
+		colQtdJogo.setCellValueFactory(new PropertyValueFactory<Jogo, Integer>("qtdJogo"));
+		
+		TableColumn<Jogo, Date> colDataLancamento  = new TableColumn<>("Lançamento");
+		colDataLancamento.setCellValueFactory(new PropertyValueFactory<Jogo, Date>("dataLancamento"));
+		
+		tableJogo.getColumns().addAll(colNome, colPreco, colQtdJogo, colDataLancamento);
+		tableJogo.setItems(control.getLista());
+	}
 	
 	public FuncionarioBoundary(Funcionario funcionario) {
 		this.funcionario = funcionario;

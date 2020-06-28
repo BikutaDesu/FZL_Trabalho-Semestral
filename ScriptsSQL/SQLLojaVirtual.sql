@@ -6,16 +6,6 @@ CREATE DATABASE lojaVirtual
 GO
 USE lojaVirtual
 
-CREATE TABLE requisitos (
-codigo INTEGER NOT NULL IDENTITY(1,1),
-so VARCHAR(100) NOT NULL,
-armazenamento VARCHAR(10) NOT NULL,
-processador VARCHAR(100) NOT NULL,
-memoria VARCHAR(10) NOT NULL,
-placaVideo VARCHAR(100),
-directX VARCHAR(5) NOT NULL
-PRIMARY KEY (codigo)
-)
 GO
 CREATE TABLE idiomas (
 codigo INTEGER NOT NULL IDENTITY(1,1),
@@ -78,11 +68,21 @@ qtdJogo INTEGER NOT NULL,
 dataLancamento DATE NOT NULL,
 desenvolvedora VARCHAR(100) NOT NULL,
 distribuidora VARCHAR(100) NOT NULL,
-imagem VARCHAR(100) NOT NULL,
-descricao VARCHAR(MAX) NOT NULL,
-requisitoCodigo INTEGER NOT NULL,
-FOREIGN KEY (requisitoCodigo) REFERENCES requisitos (codigo),
+imagem VARCHAR(MAX) NOT NULL,
+descricao VARCHAR(MAX) NOT NULL
 PRIMARY KEY (codigo)
+)
+GO
+CREATE TABLE requisitos (
+codigo INTEGER IDENTITY(1,1),
+so VARCHAR(100) NOT NULL,
+armazenamento VARCHAR(10) NOT NULL,
+processador VARCHAR(100) NOT NULL,
+memoria VARCHAR(10) NOT NULL,
+placaVideo VARCHAR(100),
+directX VARCHAR(5) NOT NULL
+PRIMARY KEY (codigo)
+FOREIGN KEY (codigo) REFERENCES jogos (codigo)
 )
 GO
 CREATE TABLE jogoIdioma (
@@ -298,3 +298,17 @@ SELECT * FROM pedidos p
 INNER JOIN usuarios u
 ON p.usuarioCPF = u.CPF
 WHERE codigo = '' ;
+
+select * from jogoIdioma
+
+SELECT i.codigo, i.nomeIdioma 
+FROM idiomas i INNER JOIN jogoIdioma ij
+ON i.codigo = ij.jogoCodigo
+INNER JOIN jogos j
+ON j.codigo = ij.jogoCodigo
+WHERE j.codigo = 20
+
+select * from jogos
+
+UPDATE jogos SET nome=?, preco=?, qtdJogo=?, dataLancamento=?, desenvolvedora=?, distribuidora=?, imagem=?, descricao=?
+WHERE jogos.codigo like ?

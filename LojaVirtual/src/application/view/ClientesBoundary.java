@@ -91,7 +91,7 @@ public class ClientesBoundary implements BoundaryContent, EventHandler<ActionEve
 			Usuario u = new Usuario();
 			
 			try {
-				u.setCPF(Integer.parseInt(txtCpf.getText()));
+				u.setCPF(txtCpf.getText());
 			}catch (Exception e) {
 				txtCpf.setText("");
 				erro+="CPF inválido!\n";
@@ -126,7 +126,7 @@ public class ClientesBoundary implements BoundaryContent, EventHandler<ActionEve
 			}
 
 			try {
-				Telefone t = new Telefone(Integer.parseInt(txtTelefone1.getText()), u);
+				Telefone t = new Telefone(txtTelefone1.getText(), u);
 				u.addTelefone(t);
 			}catch (Exception e){
 				txtTelefone1.setText("");
@@ -135,7 +135,7 @@ public class ClientesBoundary implements BoundaryContent, EventHandler<ActionEve
 			
 			if(!txtTelefone2.getText().isEmpty()) {
 				try {
-					Telefone t = new Telefone(Integer.parseInt(txtTelefone2.getText()), u);
+					Telefone t = new Telefone(txtTelefone2.getText(), u);
 					u.addTelefone(t);
 				}catch (Exception e){
 					txtTelefone2.setText("");

@@ -83,11 +83,11 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 				try {
 					u = loginControl.login(u);
 					if(u.getTipoUsuario()!=null) {
-						if(u.getTipoUsuario()==0) {
+						if(u.getTipoUsuario()==1) {
 							AdmBoundary admBoundary = new AdmBoundary(u);
 							tela.setCenter(admBoundary.generateForm());
 						}
-						if(u.getTipoUsuario()==1) {
+						if(u.getTipoUsuario()==0) {
 							//vai pra tela venda
 						}
 					}else {

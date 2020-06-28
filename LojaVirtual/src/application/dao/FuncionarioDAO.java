@@ -133,5 +133,39 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 		}
 		return listaFuncionarios;
 	}
+	
+	public List<Funcionario> pesquisarPorNome(String nome) throws SQLException {
+		String sql = "SELECT u.CPF, u.nome, u.email, u.senha, u.nomeUsuario, u.tipoUsuario, "
+				+ "f.logradouro, f.numPorta, f.CEP, f.salario FROM funcionarios f " 
+				+ "INNER JOIN usuarios u " 
+				+ "ON u.CPF = f.usuarioCPF"
+				+ "WHERE u.nome like ? ";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, "%" + nome + "%");
+		
+		ResultSet rs = ps.executeQuery();
+
+		List<Funcionario> listaFuncionarios = new ArrayList<Funcionario>();
+		
+		while (rs.next()) {
+			Usuario usuario = new Usuario();
+			usuario.setCPF(rs.getString("CPF"));
+			usuario.setNome(rs.getString("nome"));
+			usuario.setEmail(rs.getString("email"));
+			usuario.setSenha(rs.getString("senha"));
+			usuario.setNomeUsuario(rs.getString("nomeUsuario"));
+			usuario.setTipoUsuario(rs.getInt("tipoUsuario"));
+			
+			Funcionario funcionario = new Funcionario();
+			funcionario.setUsuario(usuario);
+			funcionario.setLogradouro(rs.getString("logradouro"));
+			funcionario.setNumPorta(rs.getString("numPorta"));
+			funcionario.setCEP(rs.getString("CEP"));
+			funcionario.setSalario(rs.getFloat("salario"));
+			
+			listaFuncionarios.add(funcionario);
+		}
+		return listaFuncionarios;
+	}
 
 }

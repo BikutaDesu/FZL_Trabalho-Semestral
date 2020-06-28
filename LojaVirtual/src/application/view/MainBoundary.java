@@ -10,7 +10,7 @@ public class MainBoundary extends Application{
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-		Scene scn = new Scene(login.generateForm(), 1200, 900);
+		Scene scn = new Scene(login.generateForm(), 1600, 900);
 		
 		stage.setScene(scn);
 		stage.setTitle("Raizer Games");
