@@ -17,7 +17,6 @@ public class Jogo {
 	private String descricao;
 	private Requisito requisito;
 	
-	private Funcionario funcionario;
 	private List<Idioma> idiomas = new ArrayList<Idioma>();
 	private List<Plataforma> plataforma = new ArrayList<Plataforma>();
 	private List<Categoria> categoria = new ArrayList<Categoria>();
@@ -118,14 +117,6 @@ public class Jogo {
 
 	public void setRequisito(Requisito requisito) {
 		this.requisito = requisito;
-	}
-
-	public Funcionario getFuncionario() {
-		return funcionario;
-	}
-
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
 	}
 
 	public List<Idioma> getIdiomas() {

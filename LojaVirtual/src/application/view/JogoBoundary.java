@@ -216,10 +216,14 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		panCampos.add(new Label("Imagem: "), 0, 8);
 		panCampos.add(txtIimagem, 1, 8);
 		btnBuscar.setOnAction(e -> {
-			url = fileChooser.showOpenDialog(null);
-			txtIimagem.setText(url.getPath());
-			Image imgJogo = new Image("file:///"+url, 240, 240, false, false);
-			imgViewJogo.setImage(imgJogo);
+			try {
+				url = fileChooser.showOpenDialog(null);
+				txtIimagem.setText(url.getPath());
+				Image imgJogo = new Image("file:///"+url, 240, 240, false, false);
+				imgViewJogo.setImage(imgJogo);
+			}catch (Exception ex) {
+				
+			}
 		});
 		panCampos.add(btnBuscar, 2, 8);
 

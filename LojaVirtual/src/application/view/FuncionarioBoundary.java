@@ -1,18 +1,19 @@
 package application.view;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 
 import org.json.simple.parser.ParseException;
 
 import application.control.FuncionarioControl;
-import application.model.Categoria;
+import application.control.TelefoneUsuarioControl;
 import application.model.Funcionario;
-import application.model.Idioma;
-import application.model.Jogo;
-import application.model.Plataforma;
+import application.model.Telefone;
 import application.model.Usuario;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,11 +25,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 
 public class FuncionarioBoundary implements BoundaryContent, EventHandler<ActionEvent>{
@@ -45,15 +43,20 @@ public class FuncionarioBoundary implements BoundaryContent, EventHandler<Action
 	private TextField txtEmail = new TextField();
 	private PasswordField txtSenha = new PasswordField();
 	private TextField txtNomeUsuario = new TextField();
-	private TextField txtTelefone1 = new TextField();
-	private TextField txtTelefone2 = new TextField();
+	private TextField txtTelefone = new TextField();
 	
 	private TextField txtLogradouro = new TextField();
 	private TextField txtCep = new TextField();
 	private TextField txtNumPorta = new TextField();
 	private TextField txtSalario = new TextField();
 	
+	private TelefoneUsuarioControl telefoneUsuarioControl = new TelefoneUsuarioControl();
+	private ObservableList<Telefone> telefones = FXCollections.observableArrayList();
+	private Button btnAdicionar = new Button("Adicionar");
+	private Button btnRemover = new Button("Remover");
+	
 	private TableView<Funcionario> tableFuncionario = new TableView<>();
+	private TableView<Telefone> tableTelefone = new TableView<>();
 	private Funcionario funcionario = new Funcionario();
 	private FuncionarioControl control = new FuncionarioControl();
 	
@@ -62,19 +65,72 @@ public class FuncionarioBoundary implements BoundaryContent, EventHandler<Action
 	@SuppressWarnings("unchecked")
 	public void generateTable() { 
 		TableColumn<Funcionario, String> colCpf  = new TableColumn<>("CPF");
-		colCpf.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("usuario.CPF"));
+		colCpf.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUsuario().getCPF()));
 		
 		TableColumn<Funcionario, String> colNome  = new TableColumn<>("Nome");
-		colNome.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("usuario.nome"));
+		colNome.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUsuario().getNome()));
 		
 		TableColumn<Funcionario, String> colEmail  = new TableColumn<>("E-Mail");
-		colEmail.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("usuario.email"));
+		colEmail.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUsuario().getEmail()));
 		
 		TableColumn<Funcionario, Float> colSalario  = new TableColumn<>("Salario");
 		colSalario.setCellValueFactory(new PropertyValueFactory<Funcionario, Float>("salario"));
 		
 		tableFuncionario.getColumns().addAll(colCpf, colNome, colEmail, colSalario);
 		tableFuncionario.setItems(control.getLista());
+		
+		tableFuncionario.getSelectionModel().selectedItemProperty().addListener( new ChangeListener<Funcionario>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Funcionario> observable, Funcionario oldValue,
+					Funcionario newValue) {
+				txtSenha.setText("");
+				txtTelefone.setText("");
+				entityToBoundary(newValue);
+				
+				btnAtualizar.setOnAction(e -> {
+					try {
+						control.atualizar(boundaryToEntity());
+					} catch (SQLException | IOException | ParseException e1) {
+						e1.printStackTrace();
+					}
+				});
+				btnExcluir.setOnAction(e -> {
+					try {
+						control.remover(newValue);
+					} catch (SQLException | IOException | ParseException e1) {
+						e1.printStackTrace();
+					}
+				});
+					
+			}
+			
+		});
+		
+		TableColumn<Telefone, String> colTelefone  = new TableColumn<>("Numero");
+		colTelefone.setCellValueFactory(new PropertyValueFactory<Telefone, String>("numero"));
+		
+		tableTelefone.getColumns().add(colTelefone);
+		tableTelefone.setItems(telefones);
+		tableTelefone.getSelectionModel().selectedItemProperty().addListener( new ChangeListener<Telefone>() {
+			@Override
+			public void changed(ObservableValue<? extends Telefone> observable, Telefone oldValue,
+					Telefone newValue) {
+					btnRemover.setOnAction(e -> {
+					try {
+						telefoneUsuarioControl.remover(newValue);
+						telefones.remove(newValue);
+						try {
+							control.pesquisar("");
+						} catch (IOException | ParseException e1) {
+							e1.printStackTrace();
+						}
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				});
+			}
+		});
 	}
 	
 	public FuncionarioBoundary(Funcionario funcionario) {
@@ -115,11 +171,14 @@ public class FuncionarioBoundary implements BoundaryContent, EventHandler<Action
 		panCampos.add(new Label("Nome de Usuario: "), 0, 6);
 		panCampos.add(txtNomeUsuario, 1, 6);
 		
-		panCampos.add(new Label("Telefone 1: "), 0, 7);
-		panCampos.add(txtTelefone1, 1, 7);
-		
-		panCampos.add(new Label("Telefone 2: "), 0, 8);
-		panCampos.add(txtTelefone2, 1, 8);
+		panCampos.add(new Label("Telefone: "), 0, 7);
+		panCampos.add(txtTelefone, 1, 7);
+		panCampos.add(btnAdicionar, 1, 8);
+		btnAdicionar.setOnAction(e -> {
+			Telefone t = new Telefone();
+			t.setNumero(txtTelefone.getText());
+			telefones.add(t);
+		});
 		
 		panCampos.add(new Label("Logradouro: "), 0, 9);
 		panCampos.add(txtLogradouro, 1, 9);
@@ -140,8 +199,14 @@ public class FuncionarioBoundary implements BoundaryContent, EventHandler<Action
 		btnAtualizar.setOnAction(this);
 		panCampos.add(btnAtualizar, 1, 13);
 		
-		panCampos.add(btnPesq, 3, 2);
-		panCampos.add(tableFuncionario, 3, 3, 1, 13);
+		tableTelefone.setMaxWidth(80);
+		tableTelefone.setMaxHeight(200);
+		panCampos.add(tableTelefone, 3, 2, 1, 6);
+		panCampos.add(btnRemover, 3, 8);
+		
+		btnPesq.setOnAction(this);
+		panCampos.add(btnPesq, 4, 2);
+		panCampos.add(tableFuncionario, 4, 3, 1, 11);
 		
 		tela.getChildren().addAll(panCampos);
 	}
@@ -165,6 +230,61 @@ public class FuncionarioBoundary implements BoundaryContent, EventHandler<Action
 				e.printStackTrace();
 			}
 		}
+		if (event.getTarget() == btnSalvar) {
+			Funcionario funcionario = boundaryToEntity();
+			try {
+				control.adicionar(funcionario);
+			} catch (SQLException | IOException | ParseException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private Funcionario boundaryToEntity() {
+		Usuario usuario = new Usuario();
+		Funcionario funcionario = new Funcionario();
+	
+		try {
+			usuario.setCPF(txtCpf.getText().replaceAll("\\D", ""));
+			usuario.setNome(txtNome.getText());
+			usuario.setEmail(txtEmail.getText());
+			usuario.setSenha(txtSenha.getText());
+			usuario.setNomeUsuario(txtNomeUsuario.getText());
+			for(Telefone t : telefones) {
+				t.setUsuario(usuario);
+			}			
+			usuario.setTelefones(telefones);
+			usuario.setTipoUsuario(1);
+			funcionario.setUsuario(usuario);
+			funcionario.setCEP(txtCep.getText().replaceAll("\\D", ""));
+			funcionario.setLogradouro(txtLogradouro.getText());
+			funcionario.setNumPorta(txtNumPorta.getText());
+			funcionario.setSalario(Float.parseFloat(txtSalario.getText()));
+		}catch (Exception e){
+			
+		}
+		return funcionario;
+	}
+	
+	private void entityToBoundary(Funcionario funcionario) {
+		try {
+			Usuario usuario = funcionario.getUsuario();
+			txtCpf.setText(usuario.getCPF());
+			txtNome.setText(usuario.getNome());
+			txtEmail.setText(usuario.getEmail());
+			txtNomeUsuario.setText(usuario.getNomeUsuario());
+			
+			telefones.clear();
+			telefones.addAll(usuario.getTelefones());
+			
+			txtCep.setText(funcionario.getCEP());
+			txtLogradouro.setText(funcionario.getLogradouro());
+			txtNumPorta.setText(funcionario.getNumPorta());
+			txtSalario.setText(funcionario.getSalario().toString());
+		}catch (Exception e){
+			
+		}
+		
 	}
 
 	@Override

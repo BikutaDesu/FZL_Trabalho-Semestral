@@ -124,12 +124,13 @@ public class JogoDAO implements IJogoDAO {
 
 	@Override
 	public Jogo select(Jogo jogo) throws SQLException {
-		String sql = "SELECT * FROM jogos " 
-				+ "WHERE nome LIKE ?";
+		String sql = "SELECT codigo, nome, preco, qtdJogo, CONVERT(varchar, dataLancamento ,103) AS dataLancamento, desenvolvedora, distribuidora, " + 
+				"imagem, descricao " + 
+				"FROM jogos " + 
+				"WHERE codigo = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, jogo.getID());
 		
-		int i = 0;
 		ResultSet rs = ps.executeQuery();
 		
 		if (rs.next()) {
@@ -137,18 +138,32 @@ public class JogoDAO implements IJogoDAO {
 			jogo.setNome(rs.getString("nome"));
 			jogo.setPreco(rs.getFloat("preco"));
 			jogo.setQtdJogo(rs.getInt("qtdJogo"));
-			jogo.setDataLancamento(rs.getDate("dataLancamento").toLocalDate());
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			LocalDate dt = LocalDate.parse(rs.getString("dataLancamento"), dtf);
+			jogo.setDataLancamento(dt);
+			
 			jogo.setDesenvolvedora(rs.getString("desenvolvedora"));
 			jogo.setDistribuidora(rs.getString("distribuidora"));
 			jogo.setNomeImg(rs.getString("imagem"));
 			jogo.setDescricao(rs.getString("descricao"));
+			
+			jogo.setIdiomas(jogoIdiomaDAO.selectAll(jogo));
+			jogo.setCategoria(jogoCategoriaDAO.selectAll(jogo));
+			jogo.setPlataforma(jogoPlataformaDAO.selectAll(jogo));
+			
+			RequisitoDAO requisitoDAO = new RequisitoDAO();
+			jogo.setRequisito(requisitoDAO.select(jogo));
+			
+			rs.close();
+			ps.close();
+			return jogo;
+			
+		}else {
+			rs.close();
+			ps.close();
+			return new Jogo();
 		}
-		
-		if (i == 0) {
-			jogo = new Jogo();
-		}
-		
-		return jogo;
 	}
 
 	@Override
@@ -188,6 +203,35 @@ public class JogoDAO implements IJogoDAO {
 			
 			listaJogos.add(jogo);
 		}
+		
+		rs.close();
+		ps.close();
+		return listaJogos;
+	}
+	
+	public List<Jogo> selectSimple() throws SQLException {
+		String sql = "SELECT codigo, nome, preco, qtdJogo, imagem " + 
+				"FROM jogos";
+		PreparedStatement ps = con.prepareStatement(sql);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		List<Jogo> listaJogos = new ArrayList<Jogo>();
+		
+		while (rs.next()) {
+			Jogo jogo = new Jogo();
+			
+			jogo.setID(rs.getInt("codigo"));
+			jogo.setNome(rs.getString("nome"));
+			jogo.setPreco(rs.getFloat("preco"));
+			jogo.setQtdJogo(rs.getInt("qtdJogo"));
+			jogo.setNomeImg(rs.getString("imagem"));
+						
+			listaJogos.add(jogo);
+		}
+		
+		rs.close();
+		ps.close();
 		return listaJogos;
 	}
 	
@@ -229,6 +273,9 @@ public class JogoDAO implements IJogoDAO {
 			
 			listaJogos.add(jogo);
 		}
+		
+		rs.close();
+		ps.close();
 		return listaJogos;
 	}
 

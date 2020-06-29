@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.json.simple.parser.ParseException;
 
-import application.dao.IJogoDAO;
 import application.dao.JogoDAO;
 import application.model.Jogo;
 import javafx.collections.FXCollections;
@@ -14,9 +13,14 @@ import javafx.collections.ObservableList;
 
 public class JogosControl {
 	private ObservableList<Jogo> jogos = FXCollections.observableArrayList();
-	private IJogoDAO jogoDAO = new JogoDAO();
+	private JogoDAO jogoDAO = new JogoDAO();
 	
 	public ObservableList<Jogo> getList() {
+		return jogos;
+	}
+	
+	public List<Jogo> getLista() throws SQLException, IOException, ParseException {
+		pesquisar("");
 		return jogos;
 	}
 	
@@ -40,5 +44,13 @@ public class JogosControl {
 	public void remover(Jogo jogo) throws SQLException, IOException, ParseException {
 		jogoDAO.delete(jogo);
 		pesquisar("");
+	}
+	
+	public List<Jogo> getListaSimples(Jogo jogo) throws SQLException, IOException, ParseException {
+		return jogoDAO.selectSimple();
+	}
+	
+	public Jogo buscarJogo(Jogo jogo) throws SQLException, IOException, ParseException {
+		return jogoDAO.select(jogo);
 	}
 }

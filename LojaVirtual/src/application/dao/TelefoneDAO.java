@@ -19,28 +19,34 @@ public class TelefoneDAO implements ITelefoneDAO {
 	private Connection con;
 	private SQLServerConnectionFactory factory;
 	
-	public TelefoneDAO() throws SQLException, IOException, ParseException {
-		factory = new SQLServerConnectionFactory();
-		con = factory.getConnection();
+	public TelefoneDAO(){
+		try {
+			factory = new SQLServerConnectionFactory();
+			con = factory.getConnection();
+		} catch (SQLException | IOException | ParseException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void insert(Telefone telefone) throws SQLException {
-		String sql = "INSERT INTO telefone VALUES (?, ?)";
-		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, telefone.getNumero());
-		ps.setString(2, telefone.getUsuario().getCPF());
+		if(!select(telefone)) {
+			String sql = "INSERT INTO telefones VALUES (?, ?)";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, telefone.getNumero().replaceAll("\\D", ""));
+			ps.setString(2, telefone.getUsuario().getCPF().replaceAll("\\D", ""));
 
-		ps.execute();
-		ps.close();
+			ps.execute();
+			ps.close();
+		}
 	}
 
 	@Override
 	public void update(Telefone telefone) throws SQLException {
 		String sql = "UPDATE telefones SET numero = ? WHERE CPF = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, telefone.getNumero());
-		ps.setString(2, telefone.getUsuario().getCPF());
+		ps.setString(1, telefone.getNumero().replaceAll("\\D", ""));
+		ps.setString(2, telefone.getUsuario().getCPF().replaceAll("\\D", ""));
 		
 		ps.execute();
 		ps.close();
@@ -48,20 +54,42 @@ public class TelefoneDAO implements ITelefoneDAO {
 
 	@Override
 	public void delete(Telefone telefone) throws SQLException {
-		String sql = "DELETE telefones WHERE numero = ?";
+		String sql = "DELETE FROM telefones WHERE telefone = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, telefone.getNumero());
+		ps.setString(1, telefone.getNumero().replaceAll("\\D", ""));
 		
 		ps.execute();
 		ps.close();
+	}
+	
+	public boolean select(Telefone telefone) throws SQLException {
+		String sql = "SELECT telefone " + 
+				"FROM telefones " + 
+				"WHERE telefone = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, telefone.getNumero().replaceAll("\\D", ""));
+		
+		ResultSet rs = ps.executeQuery();
+		
+		if(rs.next()) {
+			rs.close();
+			ps.close();
+			return true;
+		}else {
+			rs.close();
+			ps.close();
+			return false;
+		}
 	}
 
 
 	@Override
 	public List<Telefone> selectAll(Usuario usuario) throws SQLException {
-		String sql = "SELECT * FROM telefones WHERE usuarioCPF = ?";
+		String sql = "SELECT SUBSTRING(telefone ,1,5)+'-'+SUBSTRING(telefone ,6,9) AS telefone " + 
+				"FROM telefones " + 
+				"WHERE usuarioCPF = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, usuario.getCPF());
+		ps.setString(1, usuario.getCPF().replaceAll("\\D", ""));
 		
 		ResultSet rs = ps.executeQuery();
 

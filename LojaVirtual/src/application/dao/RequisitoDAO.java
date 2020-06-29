@@ -50,6 +50,7 @@ public class RequisitoDAO implements IRequisitoDAO {
 		String sql = "UPDATE requisitos SET so=?, armazenamento=?, processador=?, memoria=?, placaVideo=?, directX=? "
 				+ "WHERE codigo=?";
 		PreparedStatement ps = con.prepareStatement(sql);
+		
 		ps.setString(1, requisito.getSO());
 		ps.setString(2, requisito.getArmazenamento());
 		ps.setString(3, requisito.getProcessador());

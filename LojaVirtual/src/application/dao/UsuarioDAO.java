@@ -10,43 +10,71 @@ import java.util.List;
 
 import org.json.simple.parser.ParseException;
 
+import application.control.TelefoneUsuarioControl;
 import application.db.connection.factory.SQLServerConnectionFactory;
+import application.model.Telefone;
 import application.model.Usuario;
 
 public class UsuarioDAO implements IUsuarioDAO {
 
 	private Connection con;
 	private SQLServerConnectionFactory factory;
+	private TelefoneUsuarioControl telefoneUsuarioControl = new TelefoneUsuarioControl();
 	
-	public UsuarioDAO() throws SQLException, IOException, ParseException {
-		factory = new SQLServerConnectionFactory();
-		con = factory.getConnection();
+	public UsuarioDAO(){
+		try {
+			factory = new SQLServerConnectionFactory();
+			con = factory.getConnection();
+		} catch (SQLException | IOException | ParseException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void insert(Usuario usuario) throws SQLException {
 		String sql = "INSERT INTO usuarios VALUES (?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, usuario.getCPF());
+		ps.setString(1, usuario.getCPF().replaceAll("\\D", ""));
 		ps.setString(2, usuario.getNome());
 		ps.setString(3, usuario.getEmail());
 		ps.setString(4, usuario.getSenha());
 		ps.setString(5, usuario.getNomeUsuario());
-		ps.setInt(6, usuario.getTipoUsuario());
+		ps.setInt(6, usuario.getTipoUsuario());		
 		
 		ps.execute();
 		ps.close();
+		
+		for(Telefone t : usuario.getTelefones()) {
+			telefoneUsuarioControl.adicionar(t);
+		}
 	}
 
 	@Override
 	public void update(Usuario usuario) throws SQLException {
-		String sql = "UPDATE usuarios SET nome = ?, email = ?, senha = ?, nomeUsuario = ?, tipoUsuario = ?";
+		String sql = "UPDATE usuarios SET nome = ?, email = ?, nomeUsuario = ? WHERE CPF = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, usuario.getNome());
 		ps.setString(2, usuario.getEmail());
-		ps.setString(3, usuario.getSenha());
-		ps.setString(4, usuario.getNomeUsuario());
-		ps.setInt(5, usuario.getTipoUsuario());
+		ps.setString(3, usuario.getNomeUsuario());
+		ps.setString(4, usuario.getCPF().replaceAll("\\D", ""));
+		
+		ps.execute();
+		ps.close();
+		
+		for(Telefone t : usuario.getTelefones()) {
+			telefoneUsuarioControl.adicionar(t);
+		}
+		
+		if (!usuario.getSenha().isEmpty()) {
+			updatePassword(usuario);
+		}
+	}
+	
+	public void updatePassword(Usuario usuario) throws SQLException {
+		String sql = "UPDATE usuarios SET senha = ? WHERE CPF = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, usuario.getSenha());
+		ps.setString(2, usuario.getCPF().replaceAll("\\D", ""));
 		
 		ps.execute();
 		ps.close();
@@ -54,9 +82,13 @@ public class UsuarioDAO implements IUsuarioDAO {
 
 	@Override
 	public void delete(Usuario usuario) throws SQLException {
+		for(Telefone t : usuario.getTelefones()) {
+			telefoneUsuarioControl.remover(t);
+		}
+		
 		String sql = "DELETE usuarios WHERE CPF = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, usuario.getCPF());
+		ps.setString(1, usuario.getCPF().replaceAll("\\D", ""));
 		
 		ps.execute();
 		ps.close();
@@ -64,9 +96,12 @@ public class UsuarioDAO implements IUsuarioDAO {
 
 	@Override
 	public Usuario select(Usuario usuario) throws SQLException {
-		String sql = "SELECT * FROM usuarios WHERE CPF=?";
+		String sql = "SELECT	SUBSTRING(CPF,1,3)+'.'+SUBSTRING(CPF,4,3)+'.'+SUBSTRING(CPF,7,3)+'-'+SUBSTRING(CPF,10,2) AS CPF, " + 
+				"		nome, email, nomeUsuario " + 
+				"FROM usuarios " + 
+				"WHERE CPF = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, usuario.getCPF());
+		ps.setString(1, usuario.getCPF().replaceAll("\\D", ""));
 
 		ResultSet rs = ps.executeQuery();
 		
@@ -74,13 +109,14 @@ public class UsuarioDAO implements IUsuarioDAO {
 			usuario.setCPF(rs.getString("CPF"));
 			usuario.setNome(rs.getString("nome"));
 			usuario.setEmail(rs.getString("email"));
-			usuario.setSenha(rs.getString("senha"));
 			usuario.setNomeUsuario(rs.getString("nomeUsuario"));
-			usuario.setTipoUsuario(rs.getInt("tipoUsuario"));
 			rs.close();
 			ps.close();
+			
+			usuario.setTelefones(telefoneUsuarioControl.getLista(usuario));
+			
 			return usuario;
-		}else {
+		}else{
 			rs.close();
 			ps.close();
 			return new Usuario();
@@ -104,6 +140,8 @@ public class UsuarioDAO implements IUsuarioDAO {
 			usuario.setSenha(rs.getString("senha"));
 			usuario.setNomeUsuario(rs.getString("nomeUsuario"));
 			usuario.setTipoUsuario(rs.getInt("tipoUsuario"));
+			
+			usuario.setTelefones(telefoneUsuarioControl.getLista(usuario));
 			
 			listaUsuarios.add(usuario);
 		}

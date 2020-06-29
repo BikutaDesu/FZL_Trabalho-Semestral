@@ -24,4 +24,19 @@ public class FuncionarioControl {
 		List<Funcionario> listaTemp = funcionarioDAO.pesquisarPorNome(nome);
 		funcionarios.addAll(listaTemp);
 	}
+	
+	public void adicionar(Funcionario funcionario) throws SQLException, IOException, ParseException {
+		funcionarioDAO.insert(funcionario);
+		pesquisar("");
+	}
+	
+	public void atualizar(Funcionario novo) throws SQLException, IOException, ParseException {
+		funcionarioDAO.update(novo);
+		pesquisar("");
+	}
+	
+	public void remover(Funcionario funcionario) throws SQLException, IOException, ParseException {
+		funcionarioDAO.delete(funcionario);
+		pesquisar("");
+	}
 }

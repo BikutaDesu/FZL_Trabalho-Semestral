@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import org.json.simple.parser.ParseException;
 
 import application.control.LoginControl;
+import application.control.PedidoControl;
 import application.model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
@@ -61,7 +61,7 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 	public void handle(ActionEvent event){
 		erro.setText("");
 		if (event.getTarget() == btnCad) { 
-			ClientesBoundary cliente = new ClientesBoundary();
+			UsuarioBoundary cliente = new UsuarioBoundary();
 			tela.getChildren().clear();
 			tela.getChildren().addAll(cliente.generateForm());
 		} else if (event.getTarget() == btnLogin) { 
@@ -89,14 +89,19 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 							tela.getChildren().clear();
 							tela.getChildren().addAll(admBoundary.generateForm());
 						}
-						if(u.getTipoUsuario()==0) {
-							//vai pra tela venda
+						if(u.getTipoUsuario()==2) {
+							try {
+								PedidoControl pedido = new PedidoControl(u);
+								ClienteBoundary clienteBoundary = new ClienteBoundary(u, 0, pedido);
+								tela.getChildren().clear();
+								tela.getChildren().addAll(clienteBoundary.generateForm());
+							}catch (Exception e){
+							}
 						}
 					}else {
 						erro.setText("Usuario não encontrado");
 					}
 				} catch (SQLException | IOException | ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

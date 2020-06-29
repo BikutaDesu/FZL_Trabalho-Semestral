@@ -2,7 +2,6 @@ package application.dao;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,30 +11,49 @@ import java.util.List;
 import org.json.simple.parser.ParseException;
 
 import application.db.connection.factory.SQLServerConnectionFactory;
-import application.model.Funcionario;
+import application.model.Jogo;
 import application.model.Pedido;
 import application.model.Usuario;
-import jdk.nashorn.internal.runtime.ListAdapter;
 
 public class PedidoDAO implements IPedidoDAO {
 
 	private Connection con;
 	private SQLServerConnectionFactory factory;
+	private PedidoJogoDAO pedidoJogoDAO = new PedidoJogoDAO();
 	
-	public PedidoDAO() throws SQLException, IOException, ParseException {
-		factory = new SQLServerConnectionFactory();
-		con = factory.getConnection();
+	public PedidoDAO(){
+		try {
+			factory = new SQLServerConnectionFactory();
+			con = factory.getConnection();
+		} catch (SQLException | IOException | ParseException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void insert(Pedido pedido) throws SQLException {
 		String sql = "INSERT INTO pedidos VALUES (?, ?)";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setDate(1,(Date) pedido.getDataPedido());
-		ps.setString(2, pedido.getUsuarioPedido().getCPF());
-		
+		ps.setDate(1, java.sql.Date.valueOf(pedido.getDataPedido()));
+		ps.setString(2, pedido.getUsuarioPedido().getCPF().replaceAll("\\D", ""));
 		ps.execute();
 		ps.close();
+		
+		sql = "SELECT IDENT_CURRENT('pedidos') AS codigo";
+		ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+
+		if(rs.next()) {
+			pedido.setID(rs.getInt("codigo"));
+			rs.close();
+			ps.close();
+			
+			List<Jogo> jogos = new ArrayList<Jogo>();
+			jogos.addAll(pedido.getJogos());
+			for(Jogo j : jogos) {
+				pedidoJogoDAO.insert(pedido, j);
+			}
+		}		
 	}
 
 	@Override
@@ -62,7 +80,7 @@ public class PedidoDAO implements IPedidoDAO {
 		
 		if (rs.next()) {
 			pedido.setID(rs.getInt("codigo"));
-			pedido.setDataPedido(rs.getDate("dataPedido"));
+			pedido.setDataPedido(rs.getDate("dataPedido").toLocalDate());
 			
 			Usuario usuario = new Usuario();
 			usuario.setCPF(rs.getString("CPF"));
@@ -85,6 +103,40 @@ public class PedidoDAO implements IPedidoDAO {
 		ps.close();
 		return pedido;
 	}
+	
+	public List<Pedido> selectPedidos(Usuario usuario) throws SQLException {
+		String sql = "SELECT jp.pedidoCodigo, j.nome, p.dataPedido, j.preco " + 
+				"FROM usuarios u INNER JOIN pedidos p " + 
+				"ON u.CPF = p.usuarioCPF " + 
+				"INNER JOIN jogoPedido jp " + 
+				"ON jp.pedidoCodigo = p.codigo " + 
+				"INNER JOIN jogos j " + 
+				"ON j.codigo = jp.jogoCodigo " + 
+				"WHERE u.CPF = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, usuario.getCPF().replaceAll("\\D", ""));
+
+		ResultSet rs = ps.executeQuery();
+		
+		List<Pedido> listaPedidos = new ArrayList<Pedido>();
+		
+		while (rs.next()) {
+			Pedido pedido = new Pedido();
+			Jogo jogo = new Jogo();
+			
+			pedido.setID(rs.getInt("pedidoCodigo"));
+			pedido.setDataPedido(rs.getDate("dataPedido").toLocalDate());			
+			jogo.setNome(rs.getString("nome"));
+			jogo.setPreco(rs.getFloat("preco"));
+			pedido.addJogo(jogo);
+			
+			listaPedidos.add(pedido);
+		}
+		
+		ps.close();
+		rs.close();
+		return listaPedidos;
+	}
 
 	@Override
 	public List<Pedido> selectAll() throws SQLException {
@@ -100,7 +152,7 @@ public class PedidoDAO implements IPedidoDAO {
 		while (rs.next()) {
 			Pedido pedido = new Pedido();
 			pedido.setID(rs.getInt("codigo"));
-			pedido.setDataPedido(rs.getDate("dataPedido"));
+			pedido.setDataPedido(rs.getDate("dataPedido").toLocalDate());
 			
 			Usuario usuario = new Usuario();
 			usuario.setCPF(rs.getString("CPF"));

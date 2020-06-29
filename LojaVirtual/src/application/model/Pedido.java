@@ -1,13 +1,13 @@
 package application.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Pedido {
 
 	private Integer ID;
-	private Date dataPedido;
+	private LocalDate dataPedido = LocalDate.now();
 	private Usuario usuarioPedido;
 	private List<Jogo> jogos = new ArrayList<Jogo>();
 
@@ -15,7 +15,7 @@ public class Pedido {
 		
 	}
 	
-	public Pedido(Integer ID, Date dataPedido, Usuario usuarioPedido, List<Jogo> jogos) {
+	public Pedido(Integer ID, LocalDate dataPedido, Usuario usuarioPedido, List<Jogo> jogos) {
 		super();
 		this.ID = ID;
 		this.dataPedido = dataPedido;
@@ -31,11 +31,11 @@ public class Pedido {
 		this.ID = ID;
 	}
 
-	public Date getDataPedido() {
+	public LocalDate getDataPedido() {
 		return dataPedido;
 	}
 
-	public void setDataPedido(Date dataPedido) {
+	public void setDataPedido(LocalDate dataPedido) {
 		this.dataPedido = dataPedido;
 	}
 
@@ -55,4 +55,15 @@ public class Pedido {
 		this.jogos = jogos;
 	}
 
+	public void addJogo(Jogo jogo) {
+		this.jogos.add(jogo);
+	}
+	
+	public void remJogo(Jogo jogo) {
+		this.jogos.remove(jogo);
+	}
+	
+	public Jogo getJogo() {
+		return jogos.get(0);
+	}
 }
