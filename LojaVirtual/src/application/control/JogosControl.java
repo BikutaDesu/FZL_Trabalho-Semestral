@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.simple.parser.ParseException;
 
 import application.dao.JogoDAO;
+import application.dao.ModeloPesquisa;
 import application.model.Jogo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,8 +47,8 @@ public class JogosControl {
 		pesquisar("");
 	}
 	
-	public List<Jogo> getListaSimples(Jogo jogo) throws SQLException, IOException, ParseException {
-		return jogoDAO.selectSimple();
+	public List<Jogo> getListaSimples(ModeloPesquisa modeloPesquisa) throws SQLException, IOException, ParseException {
+		return jogoDAO.selectSimple(modeloPesquisa);
 	}
 	
 	public Jogo buscarJogo(Jogo jogo) throws SQLException, IOException, ParseException {

@@ -209,10 +209,35 @@ public class JogoDAO implements IJogoDAO {
 		return listaJogos;
 	}
 	
-	public List<Jogo> selectSimple() throws SQLException {
-		String sql = "SELECT codigo, nome, preco, qtdJogo, imagem " + 
-				"FROM jogos";
+	public List<Jogo> selectSimple(ModeloPesquisa modeloPesquisa) throws SQLException {
+		String sql = "SELECT DISTINCT j.codigo, j.nome, j.preco, j.qtdJogo, j.imagem " + 
+				"FROM jogos j " + 
+				"INNER JOIN jogoIdioma ji " + 
+				"ON ji.jogoCodigo = j.codigo " + 
+				"INNER JOIN jogoCategoria jc " + 
+				"ON jc.jogoCodigo = j.codigo " + 
+				"INNER JOIN jogoPlataforma jp " + 
+				"ON jp.jogoCodigo = j.codigo " + 
+				"WHERE j.nome like ? ";
+		if(modeloPesquisa.getIdioma().getID()!=0)	sql+= "AND ji.idiomaCodigo = ? ";
+		if(modeloPesquisa.getCategoria().getID()!=0) sql+= "AND jc.categoriaCodigo = ? ";
+		if(modeloPesquisa.getPlataforma().getID()!=0) sql+= "AND jp.plataformaCodigo = ? ";
+		
 		PreparedStatement ps = con.prepareStatement(sql);
+		int i = 1;
+		ps.setString(i, "%" + modeloPesquisa.getNome() + "%");
+		i++;
+		if(modeloPesquisa.getIdioma().getID()!=0) {
+			ps.setString(i, modeloPesquisa.getIdioma().getID()+"");
+			i++;
+		}
+		if(modeloPesquisa.getCategoria().getID()!=0) {
+			ps.setString(i, modeloPesquisa.getCategoria().getID()+"");
+			i++;
+		}
+		if(modeloPesquisa.getPlataforma().getID()!=0) {
+			ps.setString(i, modeloPesquisa.getPlataforma().getID()+"");
+		}
 		
 		ResultSet rs = ps.executeQuery();
 		

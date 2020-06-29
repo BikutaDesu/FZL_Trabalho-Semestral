@@ -325,3 +325,46 @@ WHERE j.codigo like 1
 
 select * from funcionarios inner join usuarios
 on funcionarios.usuarioCPF = usuarios.CPF
+
+--SELECT FUNCIONARIOS
+SELECT 	SUBSTRING(u.CPF,1,3)+'.'+SUBSTRING(u.CPF,4,3)+'.'+SUBSTRING(u.CPF,7,3)+'-'+SUBSTRING(u.CPF,10,2) AS CPF, 
+		u.nome, u.email, u.nomeUsuario, f.logradouro, f.numPorta, 
+		SUBSTRING(f.CEP,1,5)+'-'+SUBSTRING(f.CEP,6,8) AS CEP, f.salario FROM funcionarios f 
+INNER JOIN usuarios u
+ON u.CPF = f.usuarioCPF
+WHERE u.nome like ?
+
+--SELECT USUARIO
+SELECT	SUBSTRING(CPF,1,3)+'.'+SUBSTRING(CPF,4,3)+'.'+SUBSTRING(CPF,7,3)+'-'+SUBSTRING(CPF,10,2) AS CPF, 
+		nome, email, nomeUsuario 
+FROM usuarios
+WHERE CPF = ?
+
+--SELECT PEDIDOS DE UM CLIENTE
+SELECT 	jp.pedidoCodigo, j.nome, p.dataPedido, j.preco 
+FROM usuarios u INNER JOIN pedidos p
+ON u.CPF = p.usuarioCPF
+INNER JOIN jogoPedido jp
+ON jp.pedidoCodigo = p.codigo
+INNER JOIN jogos j
+ON j.codigo = jp.jogoCodigo
+WHERE u.CPF = ?
+
+--SELECT TELEFONE DE UM USUARIO
+SELECT 	SUBSTRING(telefone ,1,5)+'-'+SUBSTRING(telefone ,6,9) AS telefone
+FROM telefones
+WHERE usuarioCPF = ?
+
+--PESQUISA DE JOGOS POR NOME, IDIOMA, CATEGORIA, PLATAFORMA
+SELECT SDISTINCT j.codigo, j.nome, j.preco, j.qtdJogo, j.imagem 
+FROM jogos j 
+INNER JOIN jogoIdioma ji
+ON ji.jogoCodigo = j.codigo
+INNER JOIN jogoCategoria jc
+ON jc.jogoCodigo = j.codigo
+INNER JOIN jogoPlataforma jp
+ON jp.jogoCodigo = j.codigo
+WHERE j.nome like ?
+AND ji.idiomaCodigo = ?
+AND jc.categoriaCodigo = ?
+AND jp.plataformaCodigo = ?

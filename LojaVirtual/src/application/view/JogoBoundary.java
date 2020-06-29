@@ -350,12 +350,12 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent> 
 
 			File currentDirFile = new File("");
 			File imgOri;
-			if (txtIimagem.getText().contains(jogo.getNome())) {
-				imgOri = new File(currentDirFile.getAbsolutePath() + "/src/img/" + jogo.getNome() + ".jpg");
+			if (txtIimagem.getText().contains(jogo.getNome().replaceAll(" ", "_"))) {
+				imgOri = new File(currentDirFile.getAbsolutePath() + "/src/img/" + jogo.getNome().replaceAll(" ", "_") + ".jpg");
 			} else {
 				imgOri = new File(txtIimagem.getText());
 			}
-			File copyImg = new File(currentDirFile.getAbsolutePath() + "/src/img/" + jogo.getNome() + ".jpg");
+			File copyImg = new File(currentDirFile.getAbsolutePath() + "/src/img/" + jogo.getNome().replaceAll(" ", "_") + ".jpg");
 			Files.copy(imgOri.toPath(), copyImg.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			jogo.setNomeImg(copyImg.getName());
 
