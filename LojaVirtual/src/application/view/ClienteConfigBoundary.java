@@ -133,9 +133,8 @@ public class ClienteConfigBoundary implements BoundaryContent, EventHandler<Acti
 			tela.getChildren().add(login.generateForm());
 		}
 		if (event.getTarget() == btnVoltar) {
-			ClienteBoundary clienteBoundary;
 			try {
-				clienteBoundary = new ClienteBoundary(usuario, 0, pedido);
+				ClienteBoundary clienteBoundary = new ClienteBoundary(usuario, 0, pedido);
 				tela.getChildren().clear();
 				tela.getChildren().add(clienteBoundary.generateForm());
 			} catch (SQLException | IOException | ParseException e) {

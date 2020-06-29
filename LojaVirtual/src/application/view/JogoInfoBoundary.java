@@ -88,6 +88,7 @@ public class JogoInfoBoundary implements BoundaryContent, EventHandler<ActionEve
 
 		btnVoltar.setOnAction(this);
 		panCampos.add(btnVoltar, 0, 0);
+		
 		Label lblNome = new Label("Usuário: "+usuario.getNome());
 		lblNome.setFont(new Font(15));
 		panCampos.add(lblNome, 1, 0);
@@ -161,9 +162,8 @@ public class JogoInfoBoundary implements BoundaryContent, EventHandler<ActionEve
 			tela.getChildren().add(pedidoBoundary.generateForm());
 		}
 		if (event.getTarget() == btnVoltar) {
-			ClienteBoundary clienteBoundary;
 			try {
-				clienteBoundary = new ClienteBoundary(usuario, index, pedido);
+				ClienteBoundary clienteBoundary = new ClienteBoundary(usuario, index, pedido);
 				tela.getChildren().clear();
 				tela.getChildren().add(clienteBoundary.generateForm());
 			} catch (SQLException | IOException | ParseException e) {

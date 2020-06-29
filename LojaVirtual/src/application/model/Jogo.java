@@ -18,8 +18,8 @@ public class Jogo {
 	private Requisito requisito;
 	
 	private List<Idioma> idiomas = new ArrayList<Idioma>();
-	private List<Plataforma> plataforma = new ArrayList<Plataforma>();
-	private List<Categoria> categoria = new ArrayList<Categoria>();
+	private List<Plataforma> plataformas = new ArrayList<Plataforma>();
+	private List<Categoria> categorias = new ArrayList<Categoria>();
 	
 	public Jogo(Integer ID, String nome, Float preco, Integer qtdJogo, LocalDate dataLancamento, String desenvolvedora,
 			String distribuidora, String nomeImg, String descricao, Requisito requisito) {
@@ -111,11 +111,11 @@ public class Jogo {
 		this.descricao = descricao;
 	}
 
-	public Requisito getRequisito() {
+	public Requisito getRequisitos() {
 		return requisito;
 	}
 
-	public void setRequisito(Requisito requisito) {
+	public void setRequisitos(Requisito requisito) {
 		this.requisito = requisito;
 	}
 
@@ -128,18 +128,26 @@ public class Jogo {
 	}
 
 	public List<Plataforma> getPlataforma() {
-		return plataforma;
+		return plataformas;
 	}
 
-	public void setPlataforma(List<Plataforma> plataforma) {
-		this.plataforma = plataforma;
+	public void setPlataforma(List<Plataforma> plataformas) {
+		this.plataformas = plataformas;
 	}
 
 	public List<Categoria> getCategoria() {
-		return categoria;
+		return categorias;
 	}
 
 	public void setCategoria(List<Categoria> categoria) {
-		this.categoria = categoria;
+		this.categorias = categoria;
 	}	
+	
+	public Requisito getRequisito() {
+		return requisito;
+	}
+
+	public void setRequisito(Requisito requisito) {
+		this.requisito = requisito;
+	}
 }

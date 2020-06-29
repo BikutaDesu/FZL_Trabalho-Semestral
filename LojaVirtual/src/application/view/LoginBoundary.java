@@ -11,10 +11,12 @@ import application.model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
@@ -39,11 +41,15 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 		lblCabecalho.setFont(new Font(30));
 		panCampos.add(lblCabecalho, 0, 0, 2, 1);
 
-		panCampos.add(new Label("Email: "), 0, 1);
-		panCampos.add(txtEmail, 1, 1);
+		Label lblLogin = new Label("Login");
+		lblLogin.setFont(new Font(20));
+		panCampos.add(lblLogin, 0, 1, 2, 1);
+		
+		panCampos.add(new Label("Email: "), 0, 2);
+		panCampos.add(txtEmail, 1, 2);
 
-		panCampos.add(new Label("Senha: "), 0, 2);
-		panCampos.add(txtSenha, 1, 2);
+		panCampos.add(new Label("Senha: "), 0, 3);
+		panCampos.add(txtSenha, 1, 3);
 
 		GridPane panbtn = new GridPane();
 		btnCad.setOnAction(this);
@@ -51,22 +57,21 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 		btnLogin.setOnAction(this);
 		panbtn.add(btnLogin, 1, 0);
 
-		panCampos.add(panbtn, 1, 3);
+		panCampos.add(panbtn, 1, 4);
 
 		panCampos.add(erro, 3, 0);
-
-		tela.getChildren().addAll(panCampos);
+		
+		FlowPane pane = new FlowPane();
+		pane.setAlignment(Pos.TOP_CENTER);
+		pane.getChildren().add(panCampos);
+		
+		tela.getChildren().addAll(pane);
 	}
 
 	public void handle(ActionEvent event) {
 		erro.setText("");
-<<<<<<< HEAD
 		if (event.getTarget() == btnCad) { 
 			UsuarioBoundary cliente = new UsuarioBoundary();
-=======
-		if (event.getTarget() == btnCad) {
-			ClientesBoundary cliente = new ClientesBoundary();
->>>>>>> 006448f184f972530836e234c0cd2225e6ec5893
 			tela.getChildren().clear();
 			tela.getChildren().addAll(cliente.generateForm());
 		} else if (event.getTarget() == btnLogin) {
@@ -94,7 +99,6 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 							tela.getChildren().clear();
 							tela.getChildren().addAll(admBoundary.generateForm());
 						}
-<<<<<<< HEAD
 						if(u.getTipoUsuario()==2) {
 							try {
 								PedidoControl pedido = new PedidoControl(u);
@@ -103,10 +107,6 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 								tela.getChildren().addAll(clienteBoundary.generateForm());
 							}catch (Exception e){
 							}
-=======
-						if (u.getTipoUsuario() == 0) {
-							// vai pra tela venda
->>>>>>> 006448f184f972530836e234c0cd2225e6ec5893
 						}
 					} else {
 						erro.setText("Usuario não encontrado");

@@ -106,12 +106,14 @@ public class PedidoBoundary implements BoundaryContent, EventHandler<ActionEvent
 				e.printStackTrace();
 			}
 		}
-		try {
-			ClienteConfigBoundary clienteConfigBoundary = new ClienteConfigBoundary(usuario, pedido);
-			tela.getChildren().clear();
-			tela.getChildren().add(clienteConfigBoundary.generateForm());
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (event.getTarget() == btnConfig) {
+			try {
+				ClienteConfigBoundary clienteConfigBoundary = new ClienteConfigBoundary(usuario, pedido);
+				tela.getChildren().clear();
+				tela.getChildren().add(clienteConfigBoundary.generateForm());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

@@ -213,7 +213,6 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent> 
 		panCampos.add(new Label("Imagem: "), 0, 8);
 		panCampos.add(txtIimagem, 1, 8);
 		btnBuscar.setOnAction(e -> {
-<<<<<<< HEAD
 			try {
 				url = fileChooser.showOpenDialog(null);
 				txtIimagem.setText(url.getPath());
@@ -222,12 +221,6 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent> 
 			}catch (Exception ex) {
 				
 			}
-=======
-			url = fileChooser.showOpenDialog(null);
-			txtIimagem.setText(url.getPath());
-			Image imgJogo = new Image("file:///" + url, 240, 240, false, false);
-			imgViewJogo.setImage(imgJogo);
->>>>>>> 006448f184f972530836e234c0cd2225e6ec5893
 		});
 		panCampos.add(btnBuscar, 2, 8);
 
@@ -357,12 +350,12 @@ public class JogoBoundary implements BoundaryContent, EventHandler<ActionEvent> 
 
 			File currentDirFile = new File("");
 			File imgOri;
-			if (txtIimagem.getText().contains(jogo.getNome())) {
-				imgOri = new File(currentDirFile.getAbsolutePath() + "/src/img/" + jogo.getNome() + ".jpg");
+			if (txtIimagem.getText().contains(jogo.getNome().replaceAll(" ", "_"))) {
+				imgOri = new File(currentDirFile.getAbsolutePath() + "/src/img/" + jogo.getNome().replaceAll(" ", "_") + ".jpg");
 			} else {
 				imgOri = new File(txtIimagem.getText());
 			}
-			File copyImg = new File(currentDirFile.getAbsolutePath() + "/src/img/" + jogo.getNome() + ".jpg");
+			File copyImg = new File(currentDirFile.getAbsolutePath() + "/src/img/" + jogo.getNome().replaceAll(" ", "_") + ".jpg");
 			Files.copy(imgOri.toPath(), copyImg.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			jogo.setNomeImg(copyImg.getName());
 
