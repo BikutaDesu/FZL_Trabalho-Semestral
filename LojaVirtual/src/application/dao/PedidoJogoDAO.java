@@ -34,4 +34,22 @@ public class PedidoJogoDAO {
 		ps.execute();
 		ps.close();
 	}
+	
+	public void delete(Pedido pedido) throws SQLException {
+		String sql = "DELETE jogoPedido WHERE pedidoCodigo = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, pedido.getID());
+		
+		ps.execute();
+		ps.close();
+	}
+	
+	public void delete(Jogo jogo) throws SQLException {
+		String sql = "DELETE jogoPedido WHERE jogoCodigo = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, jogo.getID());
+		
+		ps.execute();
+		ps.close();
+	}
 }

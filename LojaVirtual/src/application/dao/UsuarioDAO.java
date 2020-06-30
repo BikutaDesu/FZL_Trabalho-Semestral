@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 
 import application.control.TelefoneUsuarioControl;
 import application.db.connection.factory.SQLServerConnectionFactory;
+import application.model.Pedido;
 import application.model.Telefone;
 import application.model.Usuario;
 
@@ -83,6 +84,14 @@ public class UsuarioDAO implements IUsuarioDAO {
 	public void delete(Usuario usuario) throws SQLException {
 		for(Telefone t : usuario.getTelefones()) {
 			telefoneUsuarioControl.remover(t);
+		}
+		
+		PedidoDAO pedidoDAO = new PedidoDAO();
+		List<Pedido> listaPedidos = new ArrayList<Pedido>();
+		listaPedidos.addAll(pedidoDAO.selectPedidos(usuario));
+		
+		for(Pedido p : listaPedidos) {
+			pedidoDAO.delete(p);
 		}
 		
 		String sql = "DELETE usuarios WHERE CPF = ?";

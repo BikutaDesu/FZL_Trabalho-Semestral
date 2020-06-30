@@ -176,20 +176,20 @@ INSERT INTO telefones (telefone, usuarioCPF)VALUES
 ('985547221', '74238647373')
 
 INSERT INTO jogos (nome, preco, qtdJogo, dataLancamento, desenvolvedora, distribuidora, imagem, descricao) VALUES
-('Missile Command', 5.99, 25, '2020-06-24', 'Nickervision Studios' , 'Distribuidora X', 'missile.png', 'Missile Command: Recharged é uma nova versão do amado e agitado clássico de fliperama'),
-('Monster Hunter World', 99.99, 30, '2019-03-11', 'CAPCOM', 'CAPCOM', 'monsterHunter.png', 'Conheça o Novo Mundo! Em Monster Hunter: World, o jogo mais recente da série.'),
-('Stardew Valley', 14.99, 50, '2016-02-26', 'ConcernedApe', 'ConcernedApe', 'stardew.png', 'Você herdou a antiga fazenda do seu avô, em Stardew Valley.'),
-('Saint Row The Third Remastered', 4.99, 75, '2016-02-24','Volition', 'Deep Silver', 'saintRow.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
-('Tomb Raider Definitive Edition', 58.99, 47, '2017-02-24', 'Eidos-Montréal', 'Square Enix', 'tombRaider.png', 'Em Shadow of the Tomb Raider Definitive Edition, acompanhe o capítulo final da origem de Lara e testemunhe'),
-('Assassins Creed Odysssey', 89.99, 51, '2019-12-24', 'Rafaela', 'Distribuidora  Y', 'assassins.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
-('Sekiro Shadows Die Twice', 47.99, 64, '2020-02-24','Rachel', 'Distribuidora Z', 'sekiro.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
-('Dark Souls III', 42.99, 93, '2016-05-12', 'Mario', 'Distribuidora S', 'dark.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
-('Hollow Knight', 78.99, 37, '2019-09-24','Sofia', 'Distribuidora F', 'hollow.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
-('Star Wars Jedi Fallen Order', 65.99, 30, '2014-02-24','Noah', 'Distribuidora R', 'starWars.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
-('Batman Arkhan Asylum', 43.99, 32, '2016-12-26', 'Joaquim', 'Distribuidora J', 'batman.png','Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
-('Naruto Shippuden Ultimate Ninja Storm 4', 76.99, 64, '2019-02-12', 'Nathan', 'Distribuidora N', 'naruto.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
-('Dragon Ball FighterZ', 83.99, 89, '2020-05-24', 'Jorge', 'Distribuidora A', 'dragonBall.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
-('Mortal Kombat 11', 49.99, 28, '2018-05-17', 'Diana', 'Distribuidora G', 'mortalKombat.png', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!')
+('Missile Command', 5.99, 25, '2020-06-24', 'Nickervision Studios' , 'Distribuidora X', 'Missile_Command.jpg', 'Missile Command: Recharged é uma nova versão do amado e agitado clássico de fliperama'),
+('Monster Hunter World', 99.99, 30, '2019-03-11', 'CAPCOM', 'CAPCOM', 'Monster_Hunter_World.jpg', 'Conheça o Novo Mundo! Em Monster Hunter: World, o jogo mais recente da série.'),
+('Stardew Valley', 14.99, 50, '2016-02-26', 'ConcernedApe', 'ConcernedApe', 'Stardew_Valley.jpg', 'Você herdou a antiga fazenda do seu avô, em Stardew Valley.'),
+('Saint Row The Third Remastered', 4.99, 75, '2016-02-24','Volition', 'Deep Silver', 'Saint_Row_The_Third_Remastered.jpg', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
+('Tomb Raider Definitive Edition', 58.99, 47, '2017-02-24', 'Eidos-Montréal', 'Square Enix', 'Tomb_Raider_Definitive_Edition.jpg', 'Em Shadow of the Tomb Raider Definitive Edition, acompanhe o capítulo final da origem de Lara e testemunhe'),
+('Assassins Creed Odysssey', 89.99, 51, '2019-12-24', 'Rafaela', 'Distribuidora  Y', 'Assassins_Creed_Odysssey.jpg', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
+('Sekiro Shadows Die Twice', 47.99, 64, '2020-02-24','Rachel', 'Distribuidora Z', 'Sekiro_Shadows_Die_Twice.jpg', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
+('Dark Souls III', 42.99, 93, '2016-05-12', 'Mario', 'Distribuidora S', 'Dark_Souls_III.jpg', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
+('Hollow Knight', 78.99, 37, '2019-09-24','Sofia', 'Distribuidora F', 'Hollow_Knight.jpg', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
+('Star Wars Jedi Fallen Order', 65.99, 30, '2014-02-24','Noah', 'Distribuidora R', 'Star_Wars_Jedi_Fallen_Order.jpg', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
+('Batman Arkhan Asylum', 43.99, 32, '2016-12-26', 'Joaquim', 'Distribuidora J', 'Batman_Arkhan_Asylum.jpg','Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
+('Naruto Shippuden Ultimate Ninja Storm 4', 76.99, 64, '2019-02-12', 'Nathan', 'Distribuidora N', 'Naruto_Shippuden_Ultimate_Ninja_Storm_4.jpg', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
+('Dragon Ball FighterZ', 83.99, 89, '2020-05-24', 'Jorge', 'Distribuidora A', 'Dragon_Ball_FighterZ.jpg', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!'),
+('Mortal Kombat 11', 49.99, 28, '2018-05-17', 'Diana', 'Distribuidora G', 'Mortal_Kombat_11.jpg', 'Prepare-se para as situações mais loucas já vistas quando os Third Street Saints decidem enfrentar o Syndicate!')
 
 INSERT INTO requisitos VALUES 
 (1,'Windows 7', '1GB', 'dual core', '500MB', NULL, '11'),

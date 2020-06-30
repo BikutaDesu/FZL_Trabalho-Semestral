@@ -1,5 +1,6 @@
 package application.db.connection.factory;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -22,7 +23,8 @@ public class SQLServerConnectionFactory {
 
 	public SQLServerConnectionFactory() throws IOException, ParseException {
 		JSONObject obj;
-		obj = parseFile(getFile("./src/application/db/connection/database-properties.json"));
+		File dir = new File("");
+		obj = parseFile(getFile(dir.getAbsolutePath()+"/database-properties.json"));
 		this.user = (String) obj.get("user");
 		this.pass = (String) obj.get("pass");
 		this.database = (String) obj.get("database");

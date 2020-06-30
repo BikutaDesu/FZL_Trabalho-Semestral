@@ -152,7 +152,7 @@ public class ClienteBoundary implements BoundaryContent, EventHandler<ActionEven
 				panJogos.setHgap(20);
 				panJogos.setVgap(20);
 				File currentDirFile = new File("");
-				Image imgJogo = new Image("file:///"+currentDirFile.getAbsolutePath()+"/src/img/"+jogo.getNomeImg(), 150, 150, false, false);
+				Image imgJogo = new Image("file:///"+currentDirFile.getAbsolutePath()+"/img/"+jogo.getNomeImg(), 150, 150, false, false);
 				ImageView imgViewJogo = new ImageView();
 				imgViewJogo.setImage(imgJogo);
 				panJogos.add(imgViewJogo, 0, 0);

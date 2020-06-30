@@ -112,7 +112,7 @@ public class JogoInfoBoundary implements BoundaryContent, EventHandler<ActionEve
 		ImageView imgViewJogo = new ImageView();
 		try {
 			File currentDirFile = new File("");
-			imgViewJogo.setImage(new Image("file:///"+currentDirFile.getAbsolutePath()+"/src/img/"+jogo.getNomeImg(), 250, 250, false, false));
+			imgViewJogo.setImage(new Image("file:///"+currentDirFile.getAbsolutePath()+"/img/"+jogo.getNomeImg(), 250, 250, false, false));
 			panCampos.add(imgViewJogo, 5, 2, 3, 11);
 		}catch (Exception e) {
 		}

@@ -58,6 +58,9 @@ public class PedidoDAO implements IPedidoDAO {
 
 	@Override
 	public void delete(Pedido pedido) throws SQLException {
+		PedidoJogoDAO pedidoJogoDAO = new PedidoJogoDAO();
+		pedidoJogoDAO.delete(pedido);
+		
 		String sql = "DELETE pedidos WHERE codigo = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, pedido.getID());

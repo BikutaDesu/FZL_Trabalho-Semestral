@@ -114,6 +114,9 @@ public class JogoDAO implements IJogoDAO {
 		jogoCategoriaDAO.delete(jogo);
 		jogoPlataformaDAO.delete(jogo);
 		
+		PedidoJogoDAO pedidoJogoDAO = new PedidoJogoDAO();
+		pedidoJogoDAO.delete(jogo);
+		
 		String sql = "DELETE FROM jogos WHERE codigo = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, jogo.getID());
