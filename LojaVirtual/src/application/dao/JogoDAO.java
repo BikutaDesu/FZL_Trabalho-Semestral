@@ -261,9 +261,9 @@ public class JogoDAO implements IJogoDAO {
 	}
 	
 	public List<Jogo> pesquisarPorNome(String nome) throws SQLException {
-		String sql = "SELECT	codigo, nome, preco, qtdJogo, CONVERT(varchar, dataLancamento ,103) AS dataLancamento, desenvolvedora, distribuidora," + 
-				"		imagem, descricao\r\n" + 
-				"FROM jogos \r\n" + 
+		String sql = "SELECT codigo, nome, preco, qtdJogo, CONVERT(varchar, dataLancamento ,103) AS dataLancamento, desenvolvedora, distribuidora," + 
+				"imagem, descricao " + 
+				"FROM jogos " + 
 				"WHERE nome like ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, "%" + nome + "%");

@@ -18,10 +18,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -143,6 +145,8 @@ public class JogoInfoBoundary implements BoundaryContent, EventHandler<ActionEve
 		
 		btnComprar.setOnAction(e -> {
 			pedido.adicionar(jogo);
+			alertaMensagem(AlertType.INFORMATION, "Sucesso!", 
+					null, String.format("O jogo "+jogo.getNome()+" foi adicionado ao seu carrinho!"));
 		});
 		panCampos.add(btnComprar, 5, 13);
 		
@@ -179,6 +183,14 @@ public class JogoInfoBoundary implements BoundaryContent, EventHandler<ActionEve
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void alertaMensagem(AlertType tipo, String titulo, String header, String msg) { 
+		Alert alert = new Alert(tipo);
+		alert.setTitle(titulo);
+		alert.setHeaderText(header);
+		alert.setContentText(msg);
+		alert.showAndWait();
 	}
 
 	@Override

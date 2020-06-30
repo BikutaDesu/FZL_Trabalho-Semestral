@@ -82,7 +82,7 @@ public class JogoIdiomaDAO {
 				"ON i.codigo = ij.idiomaCodigo " + 
 				"INNER JOIN jogos j " + 
 				"ON j.codigo = ij.jogoCodigo " + 
-				"WHERE j.codigo like ? ";
+				"WHERE j.codigo = ? ";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setLong(1, jogo.getID());
 		ResultSet rs = ps.executeQuery();
