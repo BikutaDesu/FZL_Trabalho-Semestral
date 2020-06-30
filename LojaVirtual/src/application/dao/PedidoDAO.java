@@ -88,7 +88,6 @@ public class PedidoDAO implements IPedidoDAO {
 			usuario.setEmail(rs.getString("email"));
 			usuario.setSenha(rs.getString("senha"));
 			usuario.setNomeUsuario(rs.getString("nomeUsuario"));
-			usuario.setTipoUsuario(rs.getInt("tipoUsuario"));
 			
 			pedido.setUsuarioPedido(usuario);
 			
@@ -160,7 +159,6 @@ public class PedidoDAO implements IPedidoDAO {
 			usuario.setEmail(rs.getString("email"));
 			usuario.setSenha(rs.getString("senha"));
 			usuario.setNomeUsuario(rs.getString("nomeUsuario"));
-			usuario.setTipoUsuario(rs.getInt("tipoUsuario"));
 			
 			pedido.setUsuarioPedido(usuario);
 			

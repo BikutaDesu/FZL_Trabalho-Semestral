@@ -124,6 +124,7 @@ public class ClienteBoundary implements BoundaryContent, EventHandler<ActionEven
 			try {
 				ModeloPesquisa modeloPesquisa = new ModeloPesquisa();
 				
+				modeloPesquisa.setNome(txtPesquisa.getText());
 				if(boxIdioma.getValue()!=null) modeloPesquisa.setIdioma(boxIdioma.getValue());
 				if(boxCategoria.getValue()!=null) modeloPesquisa.setCategoria(boxCategoria.getValue());
 				if(boxPlataforma.getValue()!=null) modeloPesquisa.setPlataforma(boxPlataforma.getValue());

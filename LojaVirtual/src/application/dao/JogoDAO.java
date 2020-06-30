@@ -219,7 +219,7 @@ public class JogoDAO implements IJogoDAO {
 				"INNER JOIN jogoPlataforma jp " + 
 				"ON jp.jogoCodigo = j.codigo " + 
 				"WHERE j.nome like ? ";
-		if(modeloPesquisa.getIdioma().getID()!=0)	sql+= "AND ji.idiomaCodigo = ? ";
+		if(modeloPesquisa.getIdioma().getID()!=0) sql+= "AND ji.idiomaCodigo = ? ";
 		if(modeloPesquisa.getCategoria().getID()!=0) sql+= "AND jc.categoriaCodigo = ? ";
 		if(modeloPesquisa.getPlataforma().getID()!=0) sql+= "AND jp.plataformaCodigo = ? ";
 		

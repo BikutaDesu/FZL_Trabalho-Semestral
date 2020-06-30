@@ -75,7 +75,7 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 
 	@Override
 	public Funcionario select(Funcionario funcionario) throws SQLException {
-		String sql = "SELECT u.CPF, u.nome, u.email, u.senha, u.nomeUsuario, u.tipoUsuario, "
+		String sql = "SELECT u.CPF, u.nome, u.email, u.senha, u.nomeUsuario, "
 				+ "f.logradouro, f.numPorta, f.CEP, f.salario FROM funcionarios f " + 
 				"INNER JOIN usuarios u " + 
 				"ON u.CPF = f.usuarioCPF " + 
@@ -93,7 +93,6 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 			usuario.setEmail(rs.getString("email"));
 			usuario.setSenha(rs.getString("senha"));
 			usuario.setNomeUsuario(rs.getString("nomeUsuario"));
-			usuario.setTipoUsuario(rs.getInt("tipoUsuario"));
 			
 			funcionario.setUsuario(usuario);
 			funcionario.setLogradouro(rs.getString("logradouro"));
@@ -114,7 +113,7 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 
 	@Override
 	public List<Funcionario> selectAll() throws SQLException {
-		String sql = "SELECT u.CPF, u.nome, u.email, u.senha, u.nomeUsuario, u.tipoUsuario, "
+		String sql = "SELECT u.CPF, u.nome, u.email, u.senha, u.nomeUsuario, "
 				+ "f.logradouro, f.numPorta, f.CEP, f.salario FROM funcionarios f " + 
 				"INNER JOIN usuarios u " + 
 				"ON u.CPF = f.usuarioCPF";
@@ -131,7 +130,6 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 			usuario.setEmail(rs.getString("email"));
 			usuario.setSenha(rs.getString("senha"));
 			usuario.setNomeUsuario(rs.getString("nomeUsuario"));
-			usuario.setTipoUsuario(rs.getInt("tipoUsuario"));
 			
 			Funcionario funcionario = new Funcionario();
 			funcionario.setUsuario(usuario);
@@ -180,6 +178,37 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 			listaFuncionarios.add(funcionario);
 		}
 		return listaFuncionarios;
+	}
+	
+	public Funcionario login(Funcionario f) throws SQLException {
+		String sql = "SELECT u.CPF, u.nome, u.email, u.nomeUsuario " +
+				"FROM funcionarios f " + 
+				"INNER JOIN usuarios u " + 
+				"ON u.CPF = f.usuarioCPF "+
+				"WHERE email=? AND senha=? ";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, f.getUsuario().getEmail());
+		ps.setString(2, f.getUsuario().getSenha());
+
+		ResultSet rs = ps.executeQuery();
+		
+		if (rs.next()) {
+			Funcionario funcionario = new Funcionario();
+			Usuario usuario = new Usuario();
+			usuario.setCPF(rs.getString("CPF"));
+			usuario.setNome(rs.getString("nome"));
+			usuario.setEmail(rs.getString("email"));
+			usuario.setNomeUsuario(rs.getString("nomeUsuario"));
+			
+			funcionario.setUsuario(usuario);
+			rs.close();
+			ps.close();
+			return funcionario;
+		}
+		
+		rs.close();
+		ps.close();
+		return null;
 	}
 
 }
