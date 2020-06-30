@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import org.json.simple.parser.ParseException;
 
 import application.model.Funcionario;
-import application.model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,12 +21,11 @@ public class AdmBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 	private Button btnSair = new Button("Sair");
 	private Button btnCadJogos = new Button("Manutanção de Jogos");
 	private Button btnCadFunc = new Button("Manutanção Funcionário");
+	private Button btnCadCli = new Button("Manutanção Clientes");
 	private BorderPane tela = new BorderPane();
 	
-	public AdmBoundary(Usuario u) {
-		
-		//MUDAR QUANDO TIVER O DAO DO FUNCIONARIO
-		this.funcionario.setUsuario(u);
+	public AdmBoundary(Funcionario funcionario) {
+		this.funcionario = funcionario;
 		
 		GridPane panCampos = new GridPane();
 		
@@ -36,7 +34,6 @@ public class AdmBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		panCampos.setVgap(10);
 		
 		Label lblNome = new Label("Usuário: "+funcionario.getUsuario().getNome());
-		//MUDAR QUANDO TIVER O DAO DO FUNCIONARIO
 		
 		lblNome.setFont(new Font(15));
 		panCampos.add(lblNome, 0, 0);
@@ -52,6 +49,8 @@ public class AdmBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 		panCampos.add(btnCadJogos,0,2);
 		btnCadFunc.setOnAction(this);
 		panCampos.add(btnCadFunc,0,3);
+		btnCadCli.setOnAction(this);
+		panCampos.add(btnCadCli,0,4);
 		
 		tela.setCenter(panCampos);
 	}
@@ -77,7 +76,15 @@ public class AdmBoundary implements BoundaryContent, EventHandler<ActionEvent>{
 			tela.getChildren().clear();
 			tela.getChildren().add(funcionarioBoundary.generateForm());
 		}
-		
+		if (event.getTarget() == btnCadCli) {
+			try {
+				AdmClienteBoundary admClienteBoundary = new AdmClienteBoundary(funcionario);
+				tela.getChildren().clear();
+				tela.getChildren().add(admClienteBoundary.generateForm());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override

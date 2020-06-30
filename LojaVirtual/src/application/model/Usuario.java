@@ -10,7 +10,6 @@ public class Usuario {
 	protected String email;
 	protected String senha;
 	protected String nomeUsuario;
-	protected Integer tipoUsuario;
 	protected List<Telefone> telefones = new ArrayList<Telefone>();
 
 	public Usuario() {
@@ -24,7 +23,6 @@ public class Usuario {
 		this.email = email;
 		this.senha = senha;
 		this.nomeUsuario = nomeUsuario;
-		this.tipoUsuario = tipoUsuario;
 		this.telefones = telefones;
 	}
 
@@ -66,14 +64,6 @@ public class Usuario {
 
 	public void setNomeUsuario(String nomeUsuario) {
 		this.nomeUsuario = nomeUsuario;
-	}
-
-	public Integer getTipoUsuario() {
-		return tipoUsuario;
-	}
-
-	public void setTipoUsuario(Integer tipoUsuario) {
-		this.tipoUsuario = tipoUsuario;
 	}
 
 	public List<Telefone> getTelefones() {

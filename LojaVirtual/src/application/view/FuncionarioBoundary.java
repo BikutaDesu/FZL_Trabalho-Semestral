@@ -219,7 +219,7 @@ public class FuncionarioBoundary implements BoundaryContent, EventHandler<Action
 			tela.getChildren().add(login.generateForm());
 		}
 		if (event.getTarget() == btnVoltar) {
-			AdmBoundary admBoundary = new AdmBoundary(funcionario.getUsuario());
+			AdmBoundary admBoundary = new AdmBoundary(funcionario);
 			tela.getChildren().clear();
 			tela.getChildren().add(admBoundary.generateForm());
 		}
@@ -254,7 +254,6 @@ public class FuncionarioBoundary implements BoundaryContent, EventHandler<Action
 				t.setUsuario(usuario);
 			}			
 			usuario.setTelefones(telefones);
-			usuario.setTipoUsuario(1);
 			funcionario.setUsuario(usuario);
 			funcionario.setCEP(txtCep.getText().replaceAll("\\D", ""));
 			funcionario.setLogradouro(txtLogradouro.getText());

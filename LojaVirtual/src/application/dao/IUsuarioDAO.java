@@ -12,9 +12,5 @@ public interface IUsuarioDAO {
 	public void delete(Usuario usuario) throws SQLException;
 	public Usuario select(Usuario usuario) throws SQLException;
 	public Usuario login(Usuario usuario) throws SQLException;
-	public List<Usuario> selectAll() throws SQLException;
-	public boolean validaEmail(String email) throws SQLException;
-	public boolean validaNomeUsuario(String NomeUsuario) throws SQLException;
-	public boolean validaCpf(String cpf) throws SQLException;
-	
+	public List<Usuario> selectAll(String nome) throws SQLException;	
 }

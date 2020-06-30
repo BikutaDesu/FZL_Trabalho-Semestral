@@ -1,12 +1,9 @@
 package application.view;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
-import org.json.simple.parser.ParseException;
 
 import application.control.LoginControl;
 import application.control.PedidoControl;
+import application.model.Funcionario;
 import application.model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -67,6 +64,20 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 		
 		tela.getChildren().addAll(pane);
 	}
+	
+	private Funcionario boundaryToEntity() {
+		Funcionario funcionario = new Funcionario();
+		Usuario usuario = new Usuario();
+		
+		if (!txtEmail.getText().isEmpty()) usuario.setEmail(txtEmail.getText());
+		else erro.setText("email inválido!\n");
+		if (!txtSenha.getText().isEmpty()) usuario.setSenha(txtSenha.getText());
+		else erro.setText(erro.getText() + "senha inválida!\n");
+		
+		funcionario.setUsuario(usuario);
+		
+		return funcionario;
+	}
 
 	public void handle(ActionEvent event) {
 		erro.setText("");
@@ -75,44 +86,30 @@ public class LoginBoundary implements BoundaryContent, EventHandler<ActionEvent>
 			tela.getChildren().clear();
 			tela.getChildren().addAll(cliente.generateForm());
 		} else if (event.getTarget() == btnLogin) {
-			Usuario u = new Usuario();
-
-			if (!txtEmail.getText().isEmpty()) {
-				u.setEmail(txtEmail.getText());
-			} else {
-				erro.setText("email inválido!\n");
-			}
-
-			if (!txtSenha.getText().isEmpty()) {
-				u.setSenha(txtSenha.getText());
-			} else {
-				erro.setText(erro.getText() + "senha inválida!\n");
-			}
-
+			Funcionario funcionario = new Funcionario();
+			funcionario = boundaryToEntity();
+			Usuario usuario = new Usuario();
+			usuario = funcionario.getUsuario();
+			
 			if (erro.getText().isEmpty()) {
 				LoginControl loginControl = new LoginControl();
 				try {
-					u = loginControl.login(u);
-					if (u.getTipoUsuario() != null) {
-						if (u.getTipoUsuario() == 1) {
-							AdmBoundary admBoundary = new AdmBoundary(u);
-							tela.getChildren().clear();
-							tela.getChildren().addAll(admBoundary.generateForm());
-						}
-						if(u.getTipoUsuario()==2) {
-							try {
-								PedidoControl pedido = new PedidoControl(u);
-								ClienteBoundary clienteBoundary = new ClienteBoundary(u, 0, pedido);
-								tela.getChildren().clear();
-								tela.getChildren().addAll(clienteBoundary.generateForm());
-							}catch (Exception e){
-							}
-						}
-					} else {
+					funcionario = loginControl.login(funcionario);
+					if(!funcionario.getUsuario().equals(null)) {
+						AdmBoundary admBoundary = new AdmBoundary(funcionario);
+						tela.getChildren().clear();
+						tela.getChildren().addAll(admBoundary.generateForm());
+					}
+				}catch (Exception e) {
+					try {
+						usuario = loginControl.login(usuario);
+						PedidoControl pedido = new PedidoControl(usuario);
+						ClienteBoundary clienteBoundary = new ClienteBoundary(usuario, 0, pedido);
+						tela.getChildren().clear();
+						tela.getChildren().addAll(clienteBoundary.generateForm());
+					}catch (Exception e1) {
 						erro.setText("Usuario não encontrado");
 					}
-				} catch (SQLException | IOException | ParseException e) {
-					e.printStackTrace();
 				}
 			}
 		}

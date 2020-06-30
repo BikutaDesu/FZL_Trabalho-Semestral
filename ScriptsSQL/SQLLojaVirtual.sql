@@ -30,8 +30,7 @@ CPF CHAR(11) NOT NULL CHECK(LEN(CPF) = 11),
 nome VARCHAR(100) NOT NULL, 
 email VARCHAR(50) UNIQUE NOT NULL,
 senha VARCHAR(30) NOT NULL,
-nomeUsuario VARCHAR(20) UNIQUE NOT NULL,
-tipoUsuario INTEGER NOT NULL
+nomeUsuario VARCHAR(20) UNIQUE NOT NULL
 PRIMARY KEY (CPF)
 )
 GO
@@ -148,13 +147,13 @@ INSERT INTO plataformas(nome) VALUES
 ('XBOX 360')
 
 INSERT INTO usuarios(CPF, nome, email, senha, nomeUsuario, tipoUsuario) VALUES
-('12345678912', 'Victor Neves', 'victor@teste.com', '12345', 'neves.v', 1),
-('45879121531', 'Raizer Varela', 'raizer@top.com', '123456', 'rai.v', 2),
-('84983993993', 'Kesia Top', 'Kesia@top.com', '123456', 'kes.t', 2),
-('39239488848', 'Pedro Top', 'Pedro@top.com', '123456', 'per.t', 2),
-('29347838888', 'Ana Carolina', 'ana@teste.com', '123456', 'ana.t', 2),
-('74393472537', 'Rogerio Auguto', 'rogerio@funcionario.com', '123456', 'rog.t', 1),
-('74238647373', 'Gabriel Alves', 'gabriel@funcionario.com', '123456', 'gab.t', 1)
+('12345678912', 'Victor Neves', 'victor@teste.com', '12345', 'neves.v'),
+('45879121531', 'Raizer Varela', 'raizer@top.com', '123456', 'rai.v'),
+('84983993993', 'Kesia Top', 'Kesia@top.com', '123456', 'kes.t'),
+('39239488848', 'Pedro Top', 'Pedro@top.com', '123456', 'per.t'),
+('29347838888', 'Ana Carolina', 'ana@teste.com', '123456', 'ana.t'),
+('74393472537', 'Rogerio Auguto', 'rogerio@funcionario.com', '123456', 'rog.t'),
+('74238647373', 'Gabriel Alves', 'gabriel@funcionario.com', '123456', 'gab.t')
 
 INSERT INTO funcionarios VALUES 
 ('12345678912', 'Rua José Oiticica Filho', '08210510', '381', 1200.00),
@@ -265,32 +264,6 @@ INSERT INTO jogoPedido (jogoCodigo, pedidoCodigo) VALUES
 (9, 2),
 (2, 3)
 
--- Consulta de funcionários
-SELECT u.CPF, u.nome, u.email, u.senha, u.nomeUsuario, u.tipoUsuario, f.logradouro, f.numPorta, f.CEP, f.salario FROM funcionarios f
-INNER JOIN usuarios u
-ON u.CPF = f.usuarioCPF
-WHERE u.CPF = '12345678912'
-
--- Consulta de Telefones de um usuário
-SELECT * FROM telefones WHERE usuarioCPF = '12345678912'
-
--- Consulta de Jogos
-SELECT * FROM jogos j 
-INNER JOIN requisitos r
-ON j.codigo = r.codigo
-
--- Consulta de Pedidos
-SELECT * FROM pedidos p
-INNER JOIN usuarios u
-ON p.usuarioCPF = u.CPF
-WHERE codigo = '' ;
-
-select * from jogoIdioma
-
-select * from idiomas
-select * from jogoIdioma
-select * from jogos
-
 /*
 UPDATE jogos SET nome=?, preco=?, qtdJogo=?, dataLancamento=?, desenvolvedora=?, distribuidora=?, imagem=?, descricao=?
 WHERE jogos.codigo like ?
@@ -302,29 +275,62 @@ WHERE nome like ?
 */
 
 
+--SELECT FUNCIONARIO
+SELECT 	SUBSTRING(u.CPF,1,3)+'.'+SUBSTRING(u.CPF,4,3)+'.'+SUBSTRING(u.CPF,7,3)+'-'+SUBSTRING(u.CPF,10,2) AS CPF, 
+		u.nome, u.email, u.nomeUsuario, f.logradouro, f.numPorta, 
+		SUBSTRING(f.CEP,1,5)+'-'+SUBSTRING(f.CEP,6,8) AS CEP, 
+		f.salario 
+FROM funcionarios f 
+INNER JOIN usuarios u 
+ON u.CPF = f.usuarioCPF 
+WHERE u.nome like ?
+
+--SELECT USUARIO(CLIENTE)
+SELECT 	SUBSTRING(u.CPF,1,3)+'.'+SUBSTRING(u.CPF,4,3)+'.'+SUBSTRING(u.CPF,7,3)+'-'+SUBSTRING(u.CPF,10,2) AS CPF, 
+		u.nome, u.email, u.nomeUsuario 
+FROM usuarios u LEFT OUTER JOIN funcionarios f 
+ON u.CPF = f.usuarioCPF 
+WHERE f.usuarioCPF IS NULL AND nome like ?
+
+--CONSULTA DE TELEFONE DE UM USUARIO
+SELECT SUBSTRING(telefone ,1,5)+'-'+SUBSTRING(telefone ,6,9) AS telefone 
+FROM telefones 
+WHERE usuarioCPF = ?
+
+--BUSCA OS NOMES DOS IDIOMAS RELACIONADOS AO JOGO
 SELECT i.codigo, i.nomeIdioma 
 FROM idiomas i INNER JOIN jogoIdioma ij
 ON i.codigo = ij.idiomaCodigo
 INNER JOIN jogos j
 ON j.codigo = ij.jogoCodigo
-WHERE j.codigo = 1
+WHERE j.codigo = ?
 
+--BUSCAR JOGO PELO NOME
+SELECT	codigo, nome, preco, qtdJogo, CONVERT(varchar, dataLancamento ,103) AS dataLancamento, 
+		desenvolvedora, distribuidora, imagem, descricao
+FROM jogos 
+WHERE nome like ?
+
+--BUSCAR JOGO E REQUISITOS
+SELECT * FROM jogos j 
+INNER JOIN requisitos r
+ON j.codigo = r.codigo
+
+--BUSCA O NOME DAS CATEGORIAS RELACIONADAS AO JOGO
 SELECT c.codigo, c.nome
 FROM categorias c INNER JOIN jogoCategoria jc
 ON c.codigo = jc.categoriaCodigo
 INNER JOIN jogos j
 ON j.codigo = jc.jogoCodigo
-WHERE j.codigo like 1 
+WHERE j.codigo = ? 
 
+--BUSCA O NOME DAS PLATAFORMAS RELACIONADAS AO JOGO
 SELECT p.codigo, p.nome 
 FROM plataformas p INNER JOIN jogoPlataforma jp 
 ON p.codigo = jp.plataformaCodigo 
 INNER JOIN jogos j 
 ON j.codigo = jp.jogoCodigo 
-WHERE j.codigo like 1
-
-select * from funcionarios inner join usuarios
-on funcionarios.usuarioCPF = usuarios.CPF
+WHERE j.codigo = ?
 
 --SELECT FUNCIONARIOS
 SELECT 	SUBSTRING(u.CPF,1,3)+'.'+SUBSTRING(u.CPF,4,3)+'.'+SUBSTRING(u.CPF,7,3)+'-'+SUBSTRING(u.CPF,10,2) AS CPF, 
@@ -356,7 +362,7 @@ FROM telefones
 WHERE usuarioCPF = ?
 
 --PESQUISA DE JOGOS POR NOME, IDIOMA, CATEGORIA, PLATAFORMA
-SELECT SDISTINCT j.codigo, j.nome, j.preco, j.qtdJogo, j.imagem 
+SELECT DISTINCT j.codigo, j.nome, j.preco, j.qtdJogo, j.imagem 
 FROM jogos j 
 INNER JOIN jogoIdioma ji
 ON ji.jogoCodigo = j.codigo
@@ -368,3 +374,47 @@ WHERE j.nome like ?
 AND ji.idiomaCodigo = ?
 AND jc.categoriaCodigo = ?
 AND jp.plataformaCodigo = ?
+
+--SELECIONANDO USUARIOS QUE NÃO SÃO FUNCIONARIOS (CLIENTES)
+SELECT	SUBSTRING(u.CPF,1,3)+'.'+SUBSTRING(u.CPF,4,3)+'.'+SUBSTRING(u.CPF,7,3)+'-'+SUBSTRING(u.CPF,10,2) AS CPF,
+		u.nome, u.email, u.nomeUsuario
+FROM usuarios u LEFT OUTER JOIN funcionarios f
+ON u.CPF = f.usuarioCPF
+WHERE f.usuarioCPF IS NULL AND nome like ?
+
+--SELECIONANDO CLIENTES QUE NÃO TEM PEDIDOS CADASTRADOS
+SELECT	SUBSTRING(u.CPF,1,3)+'.'+SUBSTRING(u.CPF,4,3)+'.'+SUBSTRING(u.CPF,7,3)+'-'+SUBSTRING(u.CPF,10,2) AS CPF,
+		u.nome, u.email, u.nomeUsuario
+FROM usuarios u LEFT OUTER JOIN funcionarios f
+ON u.CPF = f.usuarioCPF
+LEFT OUTER JOIN pedidos p
+ON u.CPF = p.usuarioCPF
+WHERE f.usuarioCPF IS NULL 
+AND p.usuarioCPF IS NULL
+AND nome like ?
+
+--LOGIN FUNCIONARIOS
+SELECT u.CPF, u.nome, u.email, u.nomeUsuario 
+FROM funcionarios f 
+INNER JOIN usuarios u 
+ON u.CPF = f.usuarioCPF 
+WHERE email=? AND senha=?
+
+--LOGIN CLIENTES
+SELECT u.CPF, u.nome, u.email, u.nomeUsuario 
+FROM usuarios u  
+LEFT OUTER JOIN funcionarios f 
+ON u.CPF = f.usuarioCPF 
+WHERE email=? AND senha=?
+AND f.usuarioCPF IS NULL
+
+--SOMA TOTAL DE CADA PEDIDO DE UM USUARIO(CLIENTE)
+SELECT	CONVERT(varchar, p.dataPedido ,103) AS Data_Pedido, 
+		u.nome, 
+		SUM(j.preco) AS Valor_Total
+FROM usuarios u INNER JOIN pedidos p
+ON u.CPF = p.usuarioCPF
+INNER JOIN jogos j
+ON j.codigo = p.codigo
+GROUP BY p.dataPedido, u.nome, u.CPF
+HAVING u.CPF = ?

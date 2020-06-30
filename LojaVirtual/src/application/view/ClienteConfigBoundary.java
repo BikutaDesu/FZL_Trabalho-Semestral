@@ -170,7 +170,6 @@ public class ClienteConfigBoundary implements BoundaryContent, EventHandler<Acti
 		usuario.setEmail(txtEmail.getText());
 		usuario.setSenha(txtSenha.getText());
 		usuario.setNomeUsuario(txtNomeUsuario.getText());
-		usuario.setTipoUsuario(2);
 		
 		for(Telefone t : telefones) {
 			t.setUsuario(usuario);

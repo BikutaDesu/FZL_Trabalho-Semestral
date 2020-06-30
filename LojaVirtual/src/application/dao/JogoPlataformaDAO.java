@@ -82,7 +82,7 @@ public class JogoPlataformaDAO {
 				"ON p.codigo = jp.plataformaCodigo " + 
 				"INNER JOIN jogos j " + 
 				"ON j.codigo = jp.jogoCodigo " + 
-				"WHERE j.codigo like ? ";
+				"WHERE j.codigo = ? ";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setLong(1, jogo.getID());
 		ResultSet rs = ps.executeQuery();

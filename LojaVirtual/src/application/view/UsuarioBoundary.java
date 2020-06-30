@@ -166,7 +166,6 @@ public class UsuarioBoundary implements BoundaryContent, EventHandler<ActionEven
 		u.setEmail(txtEmail.getText());
 		u.setSenha(txtSenha.getText());
 		u.setNomeUsuario(txtNomeUsuario.getText());
-		u.setTipoUsuario(2);
 		u.setTelefones(telefones);
 		
 		}catch (Exception e) {

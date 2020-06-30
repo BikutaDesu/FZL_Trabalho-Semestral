@@ -219,7 +219,7 @@ public class JogoDAO implements IJogoDAO {
 				"INNER JOIN jogoPlataforma jp " + 
 				"ON jp.jogoCodigo = j.codigo " + 
 				"WHERE j.nome like ? ";
-		if(modeloPesquisa.getIdioma().getID()!=0)	sql+= "AND ji.idiomaCodigo = ? ";
+		if(modeloPesquisa.getIdioma().getID()!=0) sql+= "AND ji.idiomaCodigo = ? ";
 		if(modeloPesquisa.getCategoria().getID()!=0) sql+= "AND jc.categoriaCodigo = ? ";
 		if(modeloPesquisa.getPlataforma().getID()!=0) sql+= "AND jp.plataformaCodigo = ? ";
 		
@@ -261,9 +261,9 @@ public class JogoDAO implements IJogoDAO {
 	}
 	
 	public List<Jogo> pesquisarPorNome(String nome) throws SQLException {
-		String sql = "SELECT	codigo, nome, preco, qtdJogo, CONVERT(varchar, dataLancamento ,103) AS dataLancamento, desenvolvedora, distribuidora," + 
-				"		imagem, descricao\r\n" + 
-				"FROM jogos \r\n" + 
+		String sql = "SELECT codigo, nome, preco, qtdJogo, CONVERT(varchar, dataLancamento ,103) AS dataLancamento, desenvolvedora, distribuidora," + 
+				"imagem, descricao " + 
+				"FROM jogos " + 
 				"WHERE nome like ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, "%" + nome + "%");
